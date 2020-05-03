@@ -1,0 +1,138 @@
+<template>
+  <modal
+    confirmName="确定"
+    @confirm="receive"
+    :icon="!hasPassword"
+    :autoClose="hasPassword"
+  >
+    <span class="back" v-show="hasPassword" @click="toggleInput"></span>
+    <transition name="left">
+      <div class="receive-warp f-c" v-show="!hasPassword">
+        <div class="tip-box">
+          <div class="tip1">请输入取件码</div>
+          <div class="tip2">发送文件后就会获得取件码</div>
+        </div>
+        <input
+          class="input-code"
+          type="text"
+          autocomplete="off"
+          maxlength="6"
+          v-model="code"
+        />
+      </div>
+    </transition>
+    <transition name="right">
+      <div class="receive-warp f-c" v-show="hasPassword" style="z-index=999">
+        <div class="tip-box">
+          <div class="tip1">请输入密码</div>
+        </div>
+        <input
+          class="input-code"
+          type="text"
+          autocomplete="off"
+          maxlength="6"
+          v-model="password"
+        />
+      </div>
+    </transition>
+  </modal>
+</template>
+
+<script>
+import modal from './modal'
+export default {
+  components: {
+    modal
+  },
+  data() {
+    return {
+      code: '',
+      hasPassword: false,
+      password: ''
+    }
+  },
+  methods: {
+    toggleInput() {
+      this.hasPassword = !this.hasPassword
+    },
+    receive() {
+      this.$api.file.receive({ code: this.code }).then(res => {
+        console.log(res)
+        if (res.status == 'password') {
+          this.hasPassword = true
+        } else if (res.status == "error") {
+          alert(res.data)
+        }else {
+          this.$emit("pickup",res.data)
+        }
+      })
+
+    }
+  }
+}
+</script>
+<style lang="scss">
+.back {
+  border-right: 3px solid rgba(0, 0, 0, 0.35);
+  border-top: 3px solid rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  height: 15px;
+  left: 50px;
+  position: absolute;
+  top: 45px;
+  transform: rotate(225deg);
+  transition: all 0.25s;
+  width: 15px;
+}
+.receive-warp {
+  .tip-box {
+    display: flex;
+    flex-direction: column;
+    height: 60px;
+    justify-content: space-around;
+  }
+  .tip2 {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .input-code {
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+    color: $theme-color;
+    font-size: 35px;
+    letter-spacing: 10px;
+    margin-bottom: 20px;
+    outline: none;
+    padding: 15px 15px 15px 25px;
+    position: relative;
+    text-align: center;
+    transition: all 0.25s;
+    width: 200px;
+    &:hover {
+      border-bottom: 2px solid $theme-color;
+    }
+  }
+}
+.left-enter-active,
+.left-leave-active {
+  transition: all 0.3s ease;
+}
+.left-enter,
+.left-leave-to {
+  position: absolute;
+  opacity: 0;
+  transform: translateX(-500px);
+}
+
+.right-enter-active,
+.right-leave-active {
+  transition: all 0.3s ease;
+}
+
+.right-enter,
+.right-leave-to {
+  position: absolute;
+  opacity: 0;
+  transform: translateX(500px);
+}
+</style>

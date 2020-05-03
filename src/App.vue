@@ -1,28 +1,46 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <my-menu></my-menu>
+    <sham></sham>
+    <m-footer></m-footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import myMenu from './components/menu'
+import sham from './components/content.vue'
+import mFooter from './components/footer.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    myMenu,
+    sham,
+    mFooter
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+@import url(./assets/styles/common.scss);
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: PingFangSC-Light, microsoft yahei light, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background-color: $theme-bg-color;
+  height: 100%;
+  width: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  overflow: hidden;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
 }
 </style>
