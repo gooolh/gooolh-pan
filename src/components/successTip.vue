@@ -1,6 +1,6 @@
 <template>
   <div>
-    <modal @confirm=finsh>
+    <modal @confirm=finsh animation="fade">
       <div class="tip-warp f-c">
         <p class="tip1">文件已成功发送</p>
         <p class="tip2">你的取货码</p>
@@ -65,5 +65,9 @@ export default {
     -webkit-user-select: text;
     user-select: text;
   }
+}
+.boom-leave-active {
+  animation: none;
+  opacity: 0;
 }
 </style>

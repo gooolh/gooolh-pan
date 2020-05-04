@@ -19,6 +19,12 @@
         <div class="menu-item">
           获取帮助
         </div>
+        <div class="menu-item">
+          选择服务器
+          <!-- <div>
+            <div>华南服务器</div>
+          </div> -->
+        </div>
       </div>
     </transition>
     <login-box ref="login"></login-box>
@@ -68,8 +74,10 @@ export default {
     top: 25px;
     right: 25px;
     color: $theme-color;
+    transition: all 0.3s;
     &:hover {
-      color: #1b6ace;
+      transform: scale(1.1);
+      color: $theme-hover-color;
     }
   }
   .s-modal {

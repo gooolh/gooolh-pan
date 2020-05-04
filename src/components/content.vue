@@ -1,8 +1,8 @@
 <template>
   <div class="content-warp">
     <div class="logo"></div>
-    <div class="send-warp">
-      <button class="btn send" @click="uploadFile">发送</button>
+    <div class="send-warp" @mouseenter="mouseenter" @mouseleave="mouseleave">
+      <button class="btn send" @click="uploadFile('file')">发送</button>
       <input
         multiple
         type="file"
@@ -10,18 +10,30 @@
         @change="changeFile"
         style="display:none"
       />
-      <div class="order-item">
+      <input
+        webkitdirectory
+        type="file"
+        ref="folder"
+        @change="changeFile"
+        style="display:none"
+      />
+      <div class="order-item" v-show="showItem">
         <div>或者</div>
         <div @click="sendText">文本</div>
+        <div @click="uploadFile('folder')">文件夹</div>
       </div>
     </div>
     <button class="btn receive" @click="receive">接收</button>
     <receive @pickup="pickup" ref="receive"></receive>
-    <send-text :data="receiveContent" @success="sendSuccess" ref="sendText"></send-text>
+    <send-text
+      :data="receiveContent"
+      @success="sendSuccess"
+      ref="sendText"
+    ></send-text>
     <upload-options
       @success="sendSuccess"
       ref="uploadOptions"
-      :fileList="fileList"
+      :files="files"
     ></upload-options>
     <success-tip ref="successTip" :code="code"></success-tip>
   </div>
@@ -41,16 +53,23 @@ export default {
   },
   data() {
     return {
-      fileList: [],
+      files: [],
       code: '',
-      receiveContent:''
+      receiveContent: '',
+      showItem: false
     }
   },
   methods: {
+    mouseenter() {
+      this.showItem = true
+    },
+    mouseleave() {
+      this.showItem = false
+    },
     pickup(data) {
       this.$refs.receive.$children[0].hide()
       if (data.type == "txt") {
-        this.receiveContent=data.content
+        this.receiveContent = data.content
         this.$refs.sendText.$children[0].show()
       }
     },
@@ -59,26 +78,31 @@ export default {
       const file = {
         code: this.code,
         typeName: '文本信息内容',
-        type:'txt'
+        type: 'txt'
       }
       this.$common.addFileList(file)
       this.$bus.$emit('refresh');
       this.$refs.successTip.$children[0].show()
     },
-    uploadFile() {
-      this.$refs.file.dispatchEvent(new MouseEvent('click'))
+    uploadFile(type) {
+      this.showItem = false
+      this.$refs[type].dispatchEvent(new MouseEvent('click'))
     },
     changeFile(e) {
-      const fileList = [].slice.call(e.target.files)
-      console.log(fileList)
-      this.fileList = fileList
+      const files = e.target.files
+      var fileSize = Math.round(files[0].size / 1024);
+      if (fileSize > 2048) {
+        alert("文件大小不能大于2m")
+        return
+      }
+      this.files = files
       this.$refs.uploadOptions.$children[0].show()
     },
     receive() {
       this.$refs.receive.$children[0].show()
     },
     sendText() {
-      this.receiveContent=''
+      this.receiveContent = ''
       this.$refs.sendText.$children[0].show()
     }
   }
@@ -104,7 +128,7 @@ export default {
     .order-item {
       position: absolute;
       top: -20px;
-      right: -50px;
+      right: -120px;
       background-color: #fff;
       border-radius: 30px;
       padding: 0 10px;
@@ -114,22 +138,17 @@ export default {
       transition: all 0.25s;
       white-space: nowrap;
       z-index: 7;
-      display: none;
-    }
-    &:hover {
-      .order-item {
-        display: flex;
-        justify-content: center;
-        div:first-child {
-          color: $theme-color;
-        }
-        div {
-          padding: 10px;
-          transition: all 0.25s;
-          &:hover:not(:first-child) {
-            background-color: $theme-color;
-            color: #fff;
-          }
+      display: flex;
+      justify-content: center;
+      div:first-child {
+        color: $theme-color;
+      }
+      div {
+        padding: 10px;
+        transition: all 0.25s;
+        &:hover:not(:first-child) {
+          background-color: $theme-color;
+          color: #fff;
         }
       }
     }
@@ -175,5 +194,8 @@ export default {
       color: #fff;
     }
   }
+}
+
+@media screen and (max-width: 500) {
 }
 </style>

@@ -10,7 +10,13 @@
       </div>
       <div class="box">
         <span>密码</span>
-        <input type="text" name="password" placeholder="可留空" autocomplete="off" />
+        <input
+          type="text"
+          name="password"
+          v-model="password"
+          placeholder="可留空"
+          autocomplete="off"
+        />
       </div>
       <div class="box">
         <span>下载次数</span>
@@ -27,22 +33,43 @@ export default {
   components: {
     modal
   },
-  props:{
-      fileList:{
-          type:Array
-      }
+  props: {
+    files: {}
   },
   data() {
     return {
+      fileList:[],
       num: 2,
-      hour: 24
+      hour: 24,
+      password:''
     }
   },
-  methods:{
-      upload(){
-          console.log("upload")
-          this.$emit("success",'123123')
+  watch:{
+    files(val){
+      this.fileList=[].slice.call(val)
+    }
+  },
+  methods: {
+    upload() {
+      console.log(this.files)
+      if(this.fileList.length>1){
+        alert("批量上传文件需要开通高级账号")
+        return
       }
+      let formData = new FormData()
+      formData.append("password",this.password)
+      formData.append('maxDownloadNum',this.num)
+      formData.append("hour",this.hour)
+      formData.append('point',"south")
+      formData.append('files', this.files[0])
+      this.$api.file.uploadFile(formData).then(res => {
+        if (res.status === 'success') {
+          this.$emit("success", res.data)
+          return
+        }
+        this.$toast.error(res.data)
+      })
+    }
   }
 }
 </script>
@@ -51,7 +78,7 @@ export default {
 .upload-options {
   min-height: 250px;
   .file-list {
-    height: 37%;
+    height: 50%;
     width: 80%;
     margin-top: 10px;
     overflow: auto;

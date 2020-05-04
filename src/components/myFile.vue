@@ -12,7 +12,7 @@
           >
             <a>{{ item.code }}</a>
             <div class="t">{{ item.typeName }}</div>
-            <span class="del" @click="deleteFile(index)"></span>
+            <span class="del" @click.stop="deleteFile(index)"></span>
           </div>
         </div>
       </div>
@@ -54,7 +54,6 @@ export default {
       this.item = item
       if (item.type == 'txt') {
         this.receive()
-        this.$refs.showText.$children[0].show()
       }
     },
     receive() {
@@ -66,6 +65,7 @@ export default {
           alert(res.data)
         } else {
           this.content = res.data.content
+          this.$refs.showText.$children[0].show()
         }
       })
 

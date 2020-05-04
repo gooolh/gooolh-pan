@@ -8,7 +8,8 @@
             >如果没有账号， <span class="register">注册</span></span
           >
           <span class="tip" v-show="needRegister"
-            >已有账号 <span class="register">登陆 | </span> <span class="register" >忘记密码?</span></span
+            >已有账号 <span class="register">登陆 | </span>
+            <span class="register">忘记密码?</span></span
           >
         </div>
         <input
@@ -46,11 +47,10 @@ export default {
     }
   },
   methods: {
-    toggleRegister(){
-      this.needRegister=!this.needRegister
+    toggleRegister() {
+      this.needRegister = !this.needRegister
     },
     login() {
-      this.$children[1].show()
       if (!this.$common.verEmail(this.email)) {
         this.$refs.email.focus()
         return
@@ -64,7 +64,16 @@ export default {
       })
     },
     register() {
-
+      const params = {
+        email: this.email,
+        password: this.password
+      }
+      this.$api.user.register(params).then(res => {
+        if (res.status == "success") {
+          console.log()
+        }
+        this.$toast.error(res.data)
+      })
     },
   }
 }
@@ -94,20 +103,24 @@ export default {
     padding: 4px 11px;
     color: rgba(0, 0, 0, 0.65);
     font-size: 14px;
-    width: 55%;
-    line-height: 1.5715;
-    background-color: #fff;
-    border: 1px solid #d9d9d9;
+    width: 56%;
+    // background-color: #fff;
+    // border: 1px solid #d9d9d9;
     margin: 7px auto;
-    border-radius: 2px;
     box-sizing: border-box;
-    // border-radius: 20px;
-    transition: all 0.3s;
+    border-radius: 24px;
+    text-align: center;
+    background-color: #f1f1f1;
+    border: none;
+    height: 36px;
+    outline: none;
+    transition: all 0.5s;
+    &:focus {
+      box-shadow: 0 0 0 1px $theme-color;
+      background-color: #fff;
+    }
     &:active {
-      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-      border-color: #40a9ff;
-      outline: 0;
-      border-right-width: 1px !important;
+      transform: scale(1.1);
     }
   }
   .login-btn {

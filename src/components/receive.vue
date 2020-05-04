@@ -56,14 +56,19 @@ export default {
       this.hasPassword = !this.hasPassword
     },
     receive() {
-      this.$api.file.receive({ code: this.code }).then(res => {
+      const params = {
+        code: this.code,
+        password: this.password
+      }
+      this.$api.file.receive(params).then(res => {
         console.log(res)
         if (res.status == 'password') {
-          this.hasPassword = true
+          this.password == "" ? this.hasPassword = true : this.$toast.error("密码不正确")
         } else if (res.status == "error") {
-          alert(res.data)
-        }else {
-          this.$emit("pickup",res.data)
+          this.$toast.error(res.data)
+        } else {
+          window.open(res.data);
+          // this.$emit("pickup",res.data)
         }
       })
 
@@ -117,9 +122,12 @@ export default {
 .left-leave-active {
   transition: all 0.3s ease;
 }
-.left-enter,
 .left-leave-to {
   position: absolute;
+  opacity: 0;
+  transform: translateX(-500px);
+}
+.left-enter {
   opacity: 0;
   transform: translateX(-500px);
 }

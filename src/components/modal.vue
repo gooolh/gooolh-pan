@@ -25,7 +25,7 @@ export default {
       default: true
     },
     animation: {
-      default: 'fade'
+      default: 'boom'
     },
     confirmName: {
       default: '完成'
@@ -82,6 +82,7 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.05) 0 10px 20px;
   box-sizing: border-box;
   transition: all 0.25s;
+  padding: 10px 0;
   z-index: 7;
   width: 500px;
   height: 390px;

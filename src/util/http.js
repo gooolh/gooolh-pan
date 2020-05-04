@@ -18,6 +18,9 @@ const errorHandle = (status, other) => {
         case 401:
             break;
         // 404请求不存在
+        case 404:
+            v.$toast.error("404 not found")
+            break;
         case 500:
             v.$toast.error("服务器正在维修")
             break;
@@ -65,9 +68,10 @@ function get(url, params) {
         params: params
     })
 }
-function post(url, params) {
+function post(url, params, headers) {
     url = base + url
-    return instance.post(url, qs.stringify(params))
+    params = headers && headers["Content-Type"] ? params : qs.stringify(params)
+    return instance.post(url, params, headers)
 }
 
 export default {
