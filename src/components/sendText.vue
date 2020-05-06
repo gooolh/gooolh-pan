@@ -1,5 +1,9 @@
 <template>
-  <modal :confirmName="data ? '复制' : '发送'" @confirm="send" :autoClose="!data">
+  <modal
+    :confirmName="data ? '复制' : '发送'"
+    @confirm="send"
+    :autoClose="!data"
+  >
     <div class="text-warp f-c">
       <p class="tip1" v-if="!data">发送文本</p>
       <p class="tip1" v-else>接收的文本</p>
@@ -25,9 +29,9 @@ export default {
       default: ''
     }
   },
-  watch: {
-    data(val) {
-      this.text = val
+  created() {
+    if (this.data) {
+      this.text = this.data
     }
   },
   data() {
@@ -37,13 +41,18 @@ export default {
   },
   methods: {
     send() {
-      if(this.data){
+      if (this.data) {
         this.$toast.info("已复制到剪贴板")
         return
       }
       this.$api.file.saveText({ text: this.text }).then(res => {
         if (res.status == 'success') {
-          this.$emit("success", res.data)
+          const file = {
+            code: res.data,
+            fileName: "文本信息内容"
+          }
+          this.$common.addFileList(file)
+          this.$router.push({ name: 'successTip', params: { code: res.data } })
           return
         }
       })

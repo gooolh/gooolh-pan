@@ -5,7 +5,7 @@ const userApi={
         return axios.post("/login",params)
     },
     register(params){
-        return axios.post("register",params)
+        return axios.post("/register",params)
     }
 }
 

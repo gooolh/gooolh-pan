@@ -1,36 +1,34 @@
 <template>
-  <div>
-    <modal :confirmName="needRegister ? '注册' : '登陆'" @confirm="login">
-      <div class="login-warp f-c">
-        <div class="logo"></div>
-        <div @click="toggleRegister">
-          <span class="tip" v-show="!needRegister"
-            >如果没有账号， <span class="register">注册</span></span
-          >
-          <span class="tip" v-show="needRegister"
-            >已有账号 <span class="register">登陆 | </span>
-            <span class="register">忘记密码?</span></span
-          >
-        </div>
-        <input
-          class="h-input"
-          type="email"
-          name="email"
-          ref="email"
-          v-model="email"
-          placeholder="邮箱"
-        />
-        <input
-          class="h-input"
-          type="password"
-          name="password"
-          ref="password"
-          v-model="password"
-          placeholder="密码"
-        />
+  <modal :confirmName="needRegister ? '注册' : '登陆'" @confirm="sub">
+    <div class="login-warp">
+      <div class="logo"></div>
+      <div @click="toggleRegister">
+        <span class="tip" v-show="!needRegister"
+          >如果没有账号， <span class="register">注册</span></span
+        >
+        <span class="tip" v-show="needRegister"
+          >已有账号 <span class="register">登陆 | </span>
+          <span class="register">忘记密码?</span></span
+        >
       </div>
-    </modal>
-  </div>
+      <input
+        class="h-input"
+        type="email"
+        name="email"
+        ref="email"
+        v-model="email"
+        placeholder="邮箱"
+      />
+      <input
+        class="h-input"
+        type="password"
+        name="password"
+        ref="password"
+        v-model="password"
+        placeholder="密码"
+      />
+    </div>
+  </modal>
 </template>
 
 <script>
@@ -47,20 +45,35 @@ export default {
     }
   },
   methods: {
-    toggleRegister() {
-      this.needRegister = !this.needRegister
-    },
-    login() {
+    sub() {
       if (!this.$common.verEmail(this.email)) {
+        this.$toast.error("请输入正确的邮箱")
         this.$refs.email.focus()
         return
       }
       if (this.password.length < 6) {
         this.$refs.password.focus()
+        this.$toast.error("账户或密码错误")
         return
       }
-      this.$api.user.login().then(res => {
-        console.log(res)
+      this.needRegister ? this.register() : this.login()
+    },
+    toggleRegister() {
+      this.needRegister = !this.needRegister
+    },
+    login() {
+      const params = {
+        email: this.email,
+        password: this.password
+      }
+      this.$api.user.login(params).then(res => {
+        if (res.status == 'error') {
+          this.$toast.error(res.data)
+          return
+        }
+        this.$toast.info("登陆成功")
+        localStorage.setItem("token",res.data)
+        this.$router.push("/")
       })
     },
     register() {
@@ -69,10 +82,12 @@ export default {
         password: this.password
       }
       this.$api.user.register(params).then(res => {
-        if (res.status == "success") {
-          console.log()
+        if (res.status == "error") {
+          this.$toast.error(res.data)
+          return
         }
-        this.$toast.error(res.data)
+        this.needRegister = false
+        this.$toast.info(res.data)
       })
     },
   }

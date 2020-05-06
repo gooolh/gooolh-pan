@@ -1,21 +1,41 @@
 <template>
   <div id="app">
     <my-menu></my-menu>
-    <sham></sham>
+    <main-view></main-view>
+    <transition :name="animation">
+      <router-view></router-view>
+    </transition>
+
+    <!-- <transition name="fade">
+      <router-view name="content"></router-view>
+    </transition> -->
+
     <m-footer></m-footer>
   </div>
 </template>
 
 <script>
 import myMenu from './components/menu'
-import sham from './components/content.vue'
 import mFooter from './components/footer.vue'
+import mainView from './components/content'
 export default {
   name: 'App',
   components: {
     myMenu,
-    sham,
-    mFooter
+    mFooter,
+    mainView
+  },
+  data() {
+    return {
+      animation: "boom"
+    }
+  },
+  watch: {
+    $route(to) {
+      if (to.meta.animation) {
+        this.animation = to.meta.animation
+      }
+    }
   }
 }
 </script>
@@ -27,20 +47,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: $theme-bg-color;
-  height: 100%;
+  height: 100vh;
   width: 100%;
-}
-body {
-  margin: 0;
-  padding: 0;
-  user-select: none;
-  overflow: hidden;
-}
-::-webkit-scrollbar {
-  width: 5px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
 }
 </style>

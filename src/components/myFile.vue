@@ -1,46 +1,37 @@
 <template>
-  <div>
-    <modal confirmName="关闭">
-      <div class="file-warp f-c">
-        <div class="tip">我的文件</div>
-        <div class="file-list">
-          <div
-            class="item"
-            v-for="(item, index) in fileList"
-            :key="item.code"
-            @click="pickup(item)"
-          >
-            <a>{{ item.code }}</a>
-            <div class="t">{{ item.typeName }}</div>
-            <span class="del" @click.stop="deleteFile(index)"></span>
-          </div>
+  <modal confirmName="关闭">
+    <div class="file-warp f-c">
+      <div class="tip">我的文件</div>
+      <div class="file-list">
+        <div
+          class="item"
+          v-for="(item, index) in fileList"
+          :key="item.code"
+          @click="pickup(item)"
+        >
+          <a>{{ item.code }}</a>
+          <div class="t">{{ item.fileName }}</div>
+          <span class="del" @click.stop="deleteFile(index)"></span>
         </div>
       </div>
-    </modal>
-    <showText ref="showText" :data="content"></showText>
-  </div>
+    </div>
+  </modal>
 </template>
 
 <script>
 import modal from './modal'
-import showText from '@/components/sendText'
 export default {
   components: {
     modal,
-    showText
   },
   data() {
     return {
       fileList: [],
       item: '',
-      content: ''
     }
   },
   created() {
     this.getFileList()
-    this.$bus.$on('refresh', () => {
-      this.getFileList()
-    });
   },
   methods: {
     getFileList() {
@@ -52,20 +43,25 @@ export default {
     },
     pickup(item) {
       this.item = item
-      if (item.type == 'txt') {
-        this.receive()
-      }
+      this.receive()
     },
     receive() {
       this.$api.file.receive({ code: this.item.code }).then(res => {
-        console.log(res)
         if (res.status == 'password') {
-          this.hasPassword = true
+          this.$router.push({name:"receive",params:{code:this.item.code}})
         } else if (res.status == "error") {
           alert(res.data)
         } else {
-          this.content = res.data.content
-          this.$refs.showText.$children[0].show()
+          if (res.data.type == 'txt') {
+            this.$router.push({ name: 'text', params: { data: res.data.content } })
+            return
+          }
+          const content = res.data.content
+          if (content.length == 1) {
+            window.open(content[0].url);
+            return
+          }
+          this.$router.push({ name: "pick", params: { fileList: content } })
         }
       })
 

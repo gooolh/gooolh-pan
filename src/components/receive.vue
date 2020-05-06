@@ -51,6 +51,12 @@ export default {
       password: ''
     }
   },
+  created(){
+    if(this.$route.params.code){
+      this.code=this.$route.params.code
+      this.hasPassword=true
+    }
+  },
   methods: {
     toggleInput() {
       this.hasPassword = !this.hasPassword
@@ -67,8 +73,18 @@ export default {
         } else if (res.status == "error") {
           this.$toast.error(res.data)
         } else {
-          window.open(res.data);
-          // this.$emit("pickup",res.data)
+          if (res.data.type == 'txt') {
+            this.$router.push({ name: 'text', params: { data: res.data.content } })
+            return
+          }
+
+          const content = res.data.content
+          if (content.length == 1) {
+            window.open(content[0].url);
+            this.$router.push("/")
+            return
+          }
+          this.$router.push({ name: "pick", params: { fileList: content } })
         }
       })
 

@@ -32,8 +32,8 @@ const errorHandle = (status, other) => {
 
 instance.interceptors.request.use(
     config => {
-        const token = ""
-        token && (config.headers.Authorization = token);
+        const token = localStorage.getItem("token")
+        token && (config.headers.token = token);
         return config;
     },
     error => Promise.error(error))

@@ -7,59 +7,79 @@
     ></svg-icon>
     <transition name="fade">
       <div class="item-warp" v-show="toggle" @click="clickMenu">
-        <div class="menu-item" data-ref="login">
-          登陆
+        <router-link to="login" v-show="!isLogin">
+          <div class="menu-item">
+            登陆
+          </div>
+        </router-link>
+        <div class="menu-item" v-show="isLogin">
+          我的账号
         </div>
-        <div class="menu-item" data-ref="file">
-          我的文件
-        </div>
+        <router-link to="myfile">
+          <div class="menu-item">
+            我的文件
+          </div>
+        </router-link>
         <div class="menu-item">
           设置
         </div>
         <div class="menu-item">
           获取帮助
         </div>
-        <div class="menu-item">
+        <div class="menu-item serve">
           选择服务器
-          <!-- <div>
-            <div>华南服务器</div>
-          </div> -->
+          <svg-icon icon-class="arrow" class-name="arrow"></svg-icon>
+          <div class="child">
+            <div
+              v-for="item in serve"
+              :key="item.id"
+              class="ci"
+              :class="{ tick: currentServer == item.id }"
+              @click="changeServe(item)"
+            >
+              {{ item.name }}
+            </div>
+          </div>
         </div>
       </div>
     </transition>
-    <login-box ref="login"></login-box>
-    <my-file ref="file"></my-file>
     <div class="mask" v-show="toggle" @click="toggleMenu"></div>
   </div>
 </template>
 
 <script>
-import loginBox from '../components/login'
-import myFile from '../components/myFile'
 export default {
   components: {
-    loginBox,
-    myFile,
   },
   data() {
     return {
       toggle: false,
+      isLogin: true,
+      currentServer: 'goolh',
+      serve: [
+        {
+          id: 'goolh',
+          name: '华南服务器',
+        },
+        {
+          id: 'none',
+          name: '美国服务器'
+        }
+      ]
     }
   },
+  created() {
+
+  },
   methods: {
+    changeServe(item){
+      this.currentServer=item.id
+    },
     toggleMenu() {
       this.toggle = !this.toggle
     },
-    clickMenu(e) {
-      console.log(this)
-      for (const r in this.$refs) {
-        if (this.$refs[r].$children.length > 0 && this.$refs[r].$children[0].hide) {
-          this.$refs[r].$children[0].hide()
-        }
-      }
+    clickMenu() {
       this.toggle = false
-      const r = e.target.getAttribute('data-ref')
-      this.$refs[r].$children[0].show()
     }
   }
 }
@@ -93,10 +113,11 @@ export default {
     padding-bottom: 13px;
     padding-top: 15px;
     transition: all 0.25s;
-    z-index: 7;
+    z-index: 10;
     right: 10px;
     top: 10px;
     .menu-item {
+      position: relative;
       color: rgba(0, 0, 0, 0.6);
       cursor: pointer;
       display: block;
@@ -106,6 +127,64 @@ export default {
       &:hover {
         background-color: $theme-color;
         color: #fff;
+      }
+    }
+    .serve {
+      &:hover {
+        .child {
+          display: block;
+          color: rgba(0, 0, 0, 0.6);
+        }
+        .arrow{
+           color:#fff;
+        }
+      }
+    }
+    .arrow {
+      width: 25px;
+      height: 25px;
+      color: rgba(0, 0, 0, 0.3);
+      position: absolute;
+      right: 20px;
+      top: 8px;
+    }
+    .line {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    }
+    .child {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0 5px 35px;
+      padding-bottom: 13px;
+      padding-top: 15px;
+      transition: all 0.25s;
+      left: -141px;
+      top: 0;
+      .tick:hover::before {
+        color: #fff;
+      }
+      .tick::before {
+        content: "";
+        border-bottom: 2px solid;
+        border-right: 2px solid;
+        color: $theme-color;
+        height: 16px;
+        left: 20px;
+        position: absolute;
+        transform: translate(-50%, -30%) rotate(45deg);
+        transform-origin: center;
+        transition: all 0.25s;
+        width: 8px;
+      }
+      .ci {
+        padding: 12px 40px;
+        position: relative;
+        &:hover {
+          background-color: $theme-color;
+          color: #fff;
+        }
       }
     }
   }

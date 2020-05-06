@@ -5,6 +5,7 @@ import mButton from '@/components/mButton.vue'
 import common from '@/util/common.js'
 import toast from '@/components/toast'
 import api from './api'
+import router from "./router.js" 
 Vue.config.productionTip = false
 Vue.prototype.$common=common
 Vue.prototype.$api=api
@@ -13,4 +14,5 @@ Vue.prototype.$bus = new Vue();
 Vue.use(toast)
 new Vue({
   render: h => h(App),
+  router
 }).$mount('#app')

@@ -1,5 +1,4 @@
 <template>
-  <transition :name="animation">
     <div class="s-modal" v-if="toggle">
       <svg-icon
         v-if="icon"
@@ -15,7 +14,6 @@
         @click.native="confirm"
       ></m-button>
     </div>
-  </transition>
 </template>
 
 <script>
@@ -36,7 +34,7 @@ export default {
   },
   data() {
     return {
-      toggle: false
+      toggle: true
     }
   },
   methods: {
@@ -44,12 +42,10 @@ export default {
       this.toggle = true
     },
     hide() {
+      this.$router.push("/")
       this.toggle = false
     },
     confirm() {
-      if (this.autoClose) {
-        this.hide()
-      }
       this.$emit("confirm")
     }
   }
@@ -57,6 +53,12 @@ export default {
 </script>
 
 <style lang="scss">
+.f-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .s-modal {
   .primary {
     color: $theme-color;
@@ -105,7 +107,6 @@ export default {
     height: 320px;
     left: 10%;
     top: calc(50% - 160px);
-    // padding-top: 10px;
     .close-icon {
       right: 15px;
       top: 15px;

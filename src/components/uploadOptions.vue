@@ -4,7 +4,7 @@
       <div class="tip1">你选择了这些文件</div>
       <div class="tip2">未登录</div>
       <div class="file-list">
-        <div class="item" v-for="(item, index) in fileList" :key="index">
+        <div class="item" v-for="(item, index) in files" :key="index">
           {{ item.name }}
         </div>
       </div>
@@ -36,35 +36,45 @@ export default {
   props: {
     files: {}
   },
+  created() {
+    this.fileList = [].slice.call(this.files)
+    console.log(this.fileList)
+  },
   data() {
     return {
-      fileList:[],
       num: 2,
       hour: 24,
-      password:''
-    }
-  },
-  watch:{
-    files(val){
-      this.fileList=[].slice.call(val)
+      password: ''
     }
   },
   methods: {
     upload() {
-      console.log(this.files)
-      if(this.fileList.length>1){
-        alert("批量上传文件需要开通高级账号")
-        return
-      }
+      // if (this.fileList.length > 1) {
+      //   alert("批量上传文件需要开通高级账号")
+      //   this.$router.push("login")
+      //   return
+      // }
       let formData = new FormData()
-      formData.append("password",this.password)
-      formData.append('maxDownloadNum',this.num)
-      formData.append("hour",this.hour)
-      formData.append('point',"south")
-      formData.append('files', this.files[0])
+      formData.append("password", this.password)
+      formData.append('maxDownloadNum', this.num)
+      formData.append("hour", this.hour)
+      formData.append('point', "south")
+      this.fileList.forEach(item=>{
+         formData.append('files', item);
+      })
+      // formData.append('files', this.fileList[0])
       this.$api.file.uploadFile(formData).then(res => {
         if (res.status === 'success') {
-          this.$emit("success", res.data)
+          let fileName = []
+          this.fileList.forEach(item => {
+            fileName.push(item.name)
+          })
+          const file = {
+            code: res.data,
+            fileName: fileName.join(",")
+          }
+          this.$common.addFileList(file)
+          this.$router.push({ name: 'successTip', params: { code: res.data } })
           return
         }
         this.$toast.error(res.data)

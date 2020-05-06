@@ -1,44 +1,37 @@
 <template>
-  <div>
-    <modal @confirm=finsh animation="fade">
-      <div class="tip-warp f-c">
-        <p class="tip1">文件已成功发送</p>
-        <p class="tip2">你的取货码</p>
-        <p class="code">{{ code }}</p>
-        <p class="tip2">接收文件时，请输入该6位数取件码</p>
-        <div class="tip2">
-          <span>你也可以 或 </span>
-          <a class="primary copy" @click="copy">复制下载链接</a>
-          <span> 或 </span>
-          <a class="primary copy">直接扫描二维码下载</a>
-        </div>
+  <modal @confirm="finsh" animation="fade">
+    <div class="tip-warp f-c">
+      <p class="tip1">文件已成功发送</p>
+      <p class="tip2">你的取货码</p>
+      <p class="code">{{ code }}</p>
+      <p class="tip2">接收文件时，请输入该6位数取件码</p>
+      <div class="tip2">
+        <span>你也可以 或 </span>
+        <a class="primary copy" @click="copy">复制下载链接</a>
+        <span> 或 </span>
+        <a class="primary copy">直接扫描二维码下载</a>
       </div>
-    </modal>
-    <fly :code="code" ref="fly"></fly>
-  </div>
+    </div>
+  </modal>
 </template>
 
 <script>
 import modal from './modal'
-import fly from '@/components/fly'
 export default {
+  components: {
+    modal
+  },
   props: {
     code: {}
   },
-  components: {
-    modal,
-    fly
+  data() {
+    return {
+    }
   },
   methods: {
     finsh() {
-      const arr = this.$parent.$refs
-      for (const r in arr) {
-        if (arr[r].$children  && arr[r].$children[0].hide) {
-          console.log(r)
-          arr[r].$children[0].hide()
-        }
-      }
-      this.$refs.fly.start()
+      this.$router.push("/")
+      this.$bus.$emit('fly', this.code);
     },
     copy() {
       this.$toast.info("复制成功")

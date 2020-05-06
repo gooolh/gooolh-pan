@@ -19,37 +19,37 @@
       />
       <div class="order-item" v-show="showItem">
         <div>或者</div>
-        <div @click="sendText">文本</div>
-        <div @click="uploadFile('folder')">文件夹</div>
+        <router-link to="/text">
+          <div class="i">文本</div>
+        </router-link>
+        <div class="i" @click="uploadFile('folder')">文件夹</div>
       </div>
     </div>
-    <button class="btn receive" @click="receive">接收</button>
-    <receive @pickup="pickup" ref="receive"></receive>
-    <send-text
-      :data="receiveContent"
-      @success="sendSuccess"
-      ref="sendText"
-    ></send-text>
-    <upload-options
-      @success="sendSuccess"
-      ref="uploadOptions"
-      :files="files"
-    ></upload-options>
-    <success-tip ref="successTip" :code="code"></success-tip>
+    <router-link to="/receive">
+      <button class="btn receive">接收</button>
+    </router-link>
+    <fly :code="code" ref="fly"></fly>
   </div>
 </template>
 <script>
-
-import receive from '@/components/receive'
-import sendText from '@/components/sendText'
-import uploadOptions from '@/components/uploadOptions'
-import successTip from '@/components/successTip'
+import fly from '@/components/fly'
 export default {
   components: {
-    receive,
-    sendText,
-    uploadOptions,
-    successTip,
+    fly
+  },
+  mounted() {
+    this.$bus.$on('fly', (data) => {
+      this.code = data
+      this.fly()
+    });
+  },
+  watch: {
+    $route(to, from) {
+      if (from.name == 'uploadOptions') {
+        this.$refs.file.value = null
+        this.$refs.folder.value = null
+      }
+    }
   },
   data() {
     return {
@@ -60,6 +60,9 @@ export default {
     }
   },
   methods: {
+    fly() {
+      this.$refs.fly.start()
+    },
     mouseenter() {
       this.showItem = true
     },
@@ -73,17 +76,6 @@ export default {
         this.$refs.sendText.$children[0].show()
       }
     },
-    sendSuccess(data) {
-      this.code = data
-      const file = {
-        code: this.code,
-        typeName: '文本信息内容',
-        type: 'txt'
-      }
-      this.$common.addFileList(file)
-      this.$bus.$emit('refresh');
-      this.$refs.successTip.$children[0].show()
-    },
     uploadFile(type) {
       this.showItem = false
       this.$refs[type].dispatchEvent(new MouseEvent('click'))
@@ -95,15 +87,7 @@ export default {
         alert("文件大小不能大于2m")
         return
       }
-      this.files = files
-      this.$refs.uploadOptions.$children[0].show()
-    },
-    receive() {
-      this.$refs.receive.$children[0].show()
-    },
-    sendText() {
-      this.receiveContent = ''
-      this.$refs.sendText.$children[0].show()
+      this.$router.push({ name: 'uploadOptions', params: { files: files } })
     }
   }
 }
@@ -140,13 +124,17 @@ export default {
       z-index: 7;
       display: flex;
       justify-content: center;
-      div:first-child {
+      & > div:first-child {
         color: $theme-color;
       }
       div {
         padding: 10px;
         transition: all 0.25s;
-        &:hover:not(:first-child) {
+      }
+      .i {
+        color: rgba(0, 0, 0, 0.6);
+        &:hover {
+          cursor: pointer;
           background-color: $theme-color;
           color: #fff;
         }
