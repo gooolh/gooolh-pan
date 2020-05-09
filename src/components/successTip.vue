@@ -1,5 +1,5 @@
 <template>
-  <modal @confirm="finsh" animation="fade">
+  <modal @confirm="finsh">
     <div class="tip-warp f-c">
       <p class="tip1">文件已成功发送</p>
       <p class="tip2">你的取货码</p>
@@ -16,28 +16,27 @@
 </template>
 
 <script>
-import modal from './modal'
+import modal from "./modal";
 export default {
   components: {
-    modal
+    modal,
   },
   props: {
-    code: {}
+    code: {},
   },
   data() {
-    return {
-    }
+    return {};
   },
   methods: {
     finsh() {
-      this.$router.push("/")
-      this.$bus.$emit('fly', this.code);
+      this.$router.push("/");
+      this.$bus.$emit("fly", this.code);
     },
     copy() {
-      this.$toast.info("复制成功")
-    }
-  }
-}
+      this.$toast.info("复制成功");
+    },
+  },
+};
 </script>
 
 <style lang="scss">

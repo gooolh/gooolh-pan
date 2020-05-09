@@ -9,47 +9,60 @@ import sendText from "@/components/sendText.vue";
 import uploadOptions from "@/components/uploadOptions.vue";
 import successTip from "@/components/successTip.vue";
 import myfile from "@/components/myfile.vue";
-
+import pick from "@/components/pick.vue"
+import account from "@/components/account.vue"
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path:"/receive",
-        name:'receive',
+        path: "/receive",
+        name: 'receive',
         component: receive
     },
     {
-        path:"/login",
+        path: "/login",
         component: login
     },
     {
-        path:"/text",
-        name:'text',
+        path: "/text",
+        name: 'text',
         component: sendText,
-        props:true,
-        meta:{
-            animation:"boom"
+        props: true,
+        meta: {
+            animation: "boom"
         }
     },
     {
-        path:"/uploadOptions",
-        name:'uploadOptions',
+        path: "/uploadOptions",
+        name: 'uploadOptions',
         component: uploadOptions,
-        props:true,
+        props: true,
     },
     {
-        path:"/successTip",
-        name:'successTip',
+        path: "/successTip",
+        name: 'successTip',
         component: successTip,
-        props:true,
+        props: true,
     },
     {
-        path:"/myfile",
+        path: "/myfile",
         component: myfile
     },
+    {
+        path: "/pick",
+        name: "pick",
+        component: pick,
+        props: true,
+    },
+    {
+        path: "/account",
+        name: "account",
+        component: account,
+        props: true,
+    }
 ]
 
-var router =  new VueRouter({
+var router = new VueRouter({
     mode: 'history',
     routes
 })

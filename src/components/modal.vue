@@ -1,19 +1,19 @@
 <template>
-    <div class="s-modal" v-if="toggle">
-      <svg-icon
-        v-if="icon"
-        icon-class="close"
-        class-name="close-icon"
-        @click.native="hide"
-      ></svg-icon>
+  <div class="s-modal" v-if="toggle">
+    <svg-icon
+      v-if="icon"
+      icon-class="close"
+      class-name="close-icon"
+      @click.native="hide"
+    ></svg-icon>
 
-      <slot></slot>
-      <m-button
-        class="c-btn"
-        :text="confirmName"
-        @click.native="confirm"
-      ></m-button>
-    </div>
+    <slot></slot>
+    <m-button
+      class="c-btn"
+      :text="confirmName"
+      @click.native="confirm"
+    ></m-button>
+  </div>
 </template>
 
 <script>
@@ -22,14 +22,11 @@ export default {
     icon: {
       default: true
     },
-    animation: {
-      default: 'boom'
-    },
     confirmName: {
       default: '完成'
     },
     autoClose: {
-      default: true
+      default: false
     }
   },
   data() {
@@ -46,6 +43,10 @@ export default {
       this.toggle = false
     },
     confirm() {
+
+      if (this.autoClose) {
+        this.hide()
+      }
       this.$emit("confirm")
     }
   }
@@ -58,6 +59,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  // height: 100%;
 }
 .s-modal {
   .primary {
@@ -84,7 +86,7 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.05) 0 10px 20px;
   box-sizing: border-box;
   transition: all 0.25s;
-  padding: 10px 0;
+  padding: 30px 0 20px;
   z-index: 7;
   width: 500px;
   height: 390px;
@@ -111,6 +113,15 @@ export default {
       right: 15px;
       top: 15px;
     }
+  }
+}
+.tip-wrap {
+  width: 100%;
+  .line {
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 1px;
+    margin: -10px auto 10px;
+    width: 65%;
   }
 }
 </style>

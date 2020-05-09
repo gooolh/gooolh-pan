@@ -1,7 +1,10 @@
-function closeModal() {
 
+function saveUser(val){
+    localStorage.setItem("user",val)
 }
-
+function getUser(){
+    localStorage.getItem("user")
+}
 function verEmail(email) {
     const reg = /^[\da-z]+([\\-\\.\\_]?[\da-z]+)*@[\da-z]+([\\-\\.]?[\da-z]+)*(\.[a-z]{2,})+$/i;
     return reg.test(email)
@@ -41,11 +44,12 @@ function removeItem(key, type = 'item') {
     localStorage.removeItem(key)
 }
 export default {
-    closeModal,
     verEmail,
     setItem,
     removeItem,
     removeFileItem,
     addFileList,
-    getFileList
+    getFileList,
+    saveUser,
+    getUser
 }

@@ -1,6 +1,6 @@
 <template>
   <modal :confirmName="needRegister ? '注册' : '登陆'" @confirm="sub">
-    <div class="login-warp">
+    <div class="login-warp f-c">
       <div class="logo"></div>
       <div @click="toggleRegister">
         <span class="tip" v-show="!needRegister"
@@ -72,7 +72,8 @@ export default {
           return
         }
         this.$toast.info("登陆成功")
-        localStorage.setItem("token",res.data)
+        localStorage.setItem("token", res.data)
+        this.$bus.$emit("login",{email:this.email})
         this.$router.push("/")
       })
     },

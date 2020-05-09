@@ -32,65 +32,65 @@
   </div>
 </template>
 <script>
-import fly from '@/components/fly'
+import fly from "@/components/fly";
 export default {
   components: {
-    fly
+    fly,
   },
   mounted() {
-    this.$bus.$on('fly', (data) => {
-      this.code = data
-      this.fly()
+    this.$bus.$on("fly", (data) => {
+      this.code = data;
+      this.fly();
     });
   },
   watch: {
     $route(to, from) {
-      if (from.name == 'uploadOptions') {
-        this.$refs.file.value = null
-        this.$refs.folder.value = null
+      if (from.name == "uploadOptions") {
+        this.$refs.file.value = null;
+        this.$refs.folder.value = null;
       }
-    }
+    },
   },
   data() {
     return {
       files: [],
-      code: '',
-      receiveContent: '',
-      showItem: false
-    }
+      code: "",
+      receiveContent: "",
+      showItem: false,
+    };
   },
   methods: {
     fly() {
-      this.$refs.fly.start()
+      this.$refs.fly.start();
     },
     mouseenter() {
-      this.showItem = true
+      this.showItem = true;
     },
     mouseleave() {
-      this.showItem = false
+      this.showItem = false;
     },
     pickup(data) {
-      this.$refs.receive.$children[0].hide()
+      this.$refs.receive.$children[0].hide();
       if (data.type == "txt") {
-        this.receiveContent = data.content
-        this.$refs.sendText.$children[0].show()
+        this.receiveContent = data.content;
+        this.$refs.sendText.$children[0].show();
       }
     },
     uploadFile(type) {
-      this.showItem = false
-      this.$refs[type].dispatchEvent(new MouseEvent('click'))
+      this.showItem = false;
+      this.$refs[type].dispatchEvent(new MouseEvent("click"));
     },
     changeFile(e) {
-      const files = e.target.files
+      const files = e.target.files;
       var fileSize = Math.round(files[0].size / 1024);
       if (fileSize > 2048) {
-        alert("文件大小不能大于2m")
-        return
+        alert("文件大小不能大于2m");
+        return;
       }
-      this.$router.push({ name: 'uploadOptions', params: { files: files } })
-    }
-  }
-}
+      this.$router.push({ name: "uploadOptions", params: { files: files } });
+    },
+  },
+};
 </script>
 
 <style lang="scss">

@@ -48,7 +48,7 @@ export default {
     receive() {
       this.$api.file.receive({ code: this.item.code }).then(res => {
         if (res.status == 'password') {
-          this.$router.push({name:"receive",params:{code:this.item.code}})
+          this.$router.push({ name: "receive", params: { code: this.item.code } })
         } else if (res.status == "error") {
           alert(res.data)
         } else {
@@ -82,6 +82,7 @@ export default {
     overflow: auto;
     width: 65%;
     font-size: small;
+    margin: auto;
     .item {
       border-bottom: solid 1px rgba(0, 0, 0, 0.1);
       font-weight: 700;

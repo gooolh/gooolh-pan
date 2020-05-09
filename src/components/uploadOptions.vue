@@ -38,29 +38,29 @@ export default {
   },
   created() {
     this.fileList = [].slice.call(this.files)
-    console.log(this.fileList)
   },
   data() {
     return {
       num: 2,
       hour: 24,
-      password: ''
+      password: '',
+      user: ''
     }
   },
   methods: {
     upload() {
-      // if (this.fileList.length > 1) {
-      //   alert("批量上传文件需要开通高级账号")
-      //   this.$router.push("login")
-      //   return
-      // }
+      if (this.fileList.length > 1 && !this.user.member) {
+        alert("批量上传文件需要开通高级账号")
+        this.uesr?'':this.$router.push("login")
+        return
+      }
       let formData = new FormData()
       formData.append("password", this.password)
       formData.append('maxDownloadNum', this.num)
       formData.append("hour", this.hour)
       formData.append('point', "south")
-      this.fileList.forEach(item=>{
-         formData.append('files', item);
+      this.fileList.forEach(item => {
+        formData.append('files', item);
       })
       // formData.append('files', this.fileList[0])
       this.$api.file.uploadFile(formData).then(res => {
@@ -92,6 +92,7 @@ export default {
     width: 80%;
     margin-top: 10px;
     overflow: auto;
+    margin: 0 auto;
     .item:nth-child(2n + 1) {
       background-color: rgba(0, 0, 0, 0.03);
     }

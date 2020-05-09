@@ -3,11 +3,10 @@
     confirmName="确定"
     @confirm="receive"
     :icon="!hasPassword"
-    :autoClose="hasPassword"
   >
     <span class="back" v-show="hasPassword" @click="toggleInput"></span>
     <transition name="left">
-      <div class="receive-warp f-c" v-show="!hasPassword">
+      <div class="receive-warp" v-show="!hasPassword">
         <div class="tip-box">
           <div class="tip1">请输入取件码</div>
           <div class="tip2">发送文件后就会获得取件码</div>
@@ -22,7 +21,7 @@
       </div>
     </transition>
     <transition name="right">
-      <div class="receive-warp f-c" v-show="hasPassword" style="z-index=999">
+      <div class="receive-warp" v-show="hasPassword" style="z-index=999">
         <div class="tip-box">
           <div class="tip1">请输入密码</div>
         </div>
@@ -59,6 +58,7 @@ export default {
   },
   methods: {
     toggleInput() {
+      this.password=''
       this.hasPassword = !this.hasPassword
     },
     receive() {
@@ -77,7 +77,6 @@ export default {
             this.$router.push({ name: 'text', params: { data: res.data.content } })
             return
           }
-
           const content = res.data.content
           if (content.length == 1) {
             window.open(content[0].url);

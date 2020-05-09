@@ -1,13 +1,11 @@
 <template>
-  <modal
-    :confirmName="data ? '复制' : '发送'"
-    @confirm="send"
-    :autoClose="!data"
-  >
+  <modal :confirmName="data ? '复制' : '发送'" @confirm="send">
     <div class="text-warp f-c">
-      <p class="tip1" v-if="!data">发送文本</p>
-      <p class="tip1" v-else>接收的文本</p>
-      <div class="line"></div>
+      <div class="tip-wrap">
+        <p class="tip1" v-if="!data">发送文本</p>
+        <p class="tip1" v-else>接收的文本</p>
+        <div class="line"></div>
+      </div>
       <textarea
         v-model="text"
         class="tx"
@@ -63,12 +61,6 @@ export default {
 
 <style lang="scss">
 .text-warp {
-  .line {
-    background-color: rgba(0, 0, 0, 0.1);
-    height: 1px;
-    margin: -10px auto 10px;
-    width: 65%;
-  }
   .tx {
     background-color: rgba(0, 0, 0, 0.05);
     border: 1px solid transparent;

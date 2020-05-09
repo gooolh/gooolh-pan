@@ -7,12 +7,12 @@
     ></svg-icon>
     <transition name="fade">
       <div class="item-warp" v-show="toggle" @click="clickMenu">
-        <router-link to="login" v-show="!isLogin">
+        <router-link to="login" v-show="!user">
           <div class="menu-item">
             登陆
           </div>
         </router-link>
-        <div class="menu-item" v-show="isLogin">
+        <div class="menu-item" v-show="user" @click="account">
           我的账号
         </div>
         <router-link to="myfile">
@@ -49,43 +49,54 @@
 
 <script>
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       toggle: false,
-      isLogin: true,
-      currentServer: 'goolh',
+      currentServer: "goolh",
+      user: "",
       serve: [
         {
-          id: 'goolh',
-          name: '华南服务器',
+          id: "goolh",
+          name: "华南服务器",
         },
         {
-          id: 'none',
-          name: '美国服务器'
-        }
-      ]
-    }
+          id: "none",
+          name: "美国服务器",
+        },
+      ],
+    };
   },
   created() {
-
+    this.$bus.$on("login", (data) => {
+      this.user = data;
+    });
+    this.$api.user.init().then((res) => {
+      if (res.status == "success") {
+        this.user = res.data;
+        this.$bus.$emit("user", this.user);
+      }
+    });
   },
   methods: {
-    changeServe(item){
-      this.currentServer=item.id
+    account() {
+      this.$router.push({ name: "account", params: { user: this.user } });
+    },
+    changeServe(item) {
+      this.currentServer = item.id;
+      this.$bus.$emit("server", this.currentServer);
     },
     toggleMenu() {
-      this.toggle = !this.toggle
+      this.toggle = !this.toggle;
     },
     clickMenu() {
-      this.toggle = false
-    }
-  }
-}
+      this.toggle = false;
+    },
+  },
+};
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .menu {
   .icon {
     position: absolute;
@@ -135,8 +146,8 @@ export default {
           display: block;
           color: rgba(0, 0, 0, 0.6);
         }
-        .arrow{
-           color:#fff;
+        .arrow {
+          color: #fff;
         }
       }
     }
