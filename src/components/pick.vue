@@ -5,7 +5,7 @@
         <p class="tip1">接收到的文件</p>
         <div class="line"></div>
       </div>
-      <div>
+      <div style="width:100%">
         <div
           v-for="item in fileList"
           class="item"
@@ -37,7 +37,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
+.s-modal{
+  justify-content: space-around;
+}
 .pick-wrap {
   margin: 0 5%;
   border-radius: 10px;

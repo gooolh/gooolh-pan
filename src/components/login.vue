@@ -32,67 +32,70 @@
 </template>
 
 <script>
-import modal from './modal'
+import modal from "./modal";
 export default {
   components: {
-    modal
+    modal,
   },
   data() {
     return {
       needRegister: false,
-      email: '',
-      password: ''
-    }
+      email: "",
+      password: "",
+    };
   },
   methods: {
     sub() {
       if (!this.$common.verEmail(this.email)) {
-        this.$toast.error("请输入正确的邮箱")
-        this.$refs.email.focus()
-        return
+        this.$toast.error("请输入正确的邮箱");
+        this.$refs.email.focus();
+        return;
       }
       if (this.password.length < 6) {
-        this.$refs.password.focus()
-        this.$toast.error("账户或密码错误")
-        return
+        this.$refs.password.focus();
+        this.$toast.error("账户或密码错误");
+        return;
       }
-      this.needRegister ? this.register() : this.login()
+      this.needRegister ? this.register() : this.login();
     },
     toggleRegister() {
-      this.needRegister = !this.needRegister
+      this.needRegister = !this.needRegister;
     },
     login() {
       const params = {
         email: this.email,
-        password: this.password
-      }
-      this.$api.user.login(params).then(res => {
-        if (res.status == 'error') {
-          this.$toast.error(res.data)
-          return
+        password: this.password,
+      };
+      this.$api.user.login(params).then((res) => {
+        if (res.status == "error") {
+          this.$toast.error(res.data);
+          return;
         }
-        this.$toast.info("登陆成功")
-        localStorage.setItem("token", res.data)
-        this.$bus.$emit("login",{email:this.email})
-        this.$router.push("/")
-      })
+        this.$toast.info("登陆成功");
+        const data = res.data;
+        localStorage.setItem("token", data.token);
+        delete data.token;
+        this.$common.saveUser(data);
+        this.$bus.$emit("login", { email: this.email });
+        this.$router.push("/");
+      });
     },
     register() {
       const params = {
         email: this.email,
-        password: this.password
-      }
-      this.$api.user.register(params).then(res => {
+        password: this.password,
+      };
+      this.$api.user.register(params).then((res) => {
         if (res.status == "error") {
-          this.$toast.error(res.data)
-          return
+          this.$toast.error(res.data);
+          return;
         }
-        this.needRegister = false
-        this.$toast.info(res.data)
-      })
+        this.needRegister = false;
+        this.$toast.info(res.data);
+      });
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

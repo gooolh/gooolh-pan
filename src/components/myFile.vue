@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import modal from './modal'
+import modal from "./modal";
 export default {
   components: {
     modal,
@@ -27,47 +27,61 @@ export default {
   data() {
     return {
       fileList: [],
-      item: '',
-    }
+      item: "",
+      user: "",
+    };
   },
   created() {
-    this.getFileList()
+    this.user = this.$common.getUser();
+    this.getFileList();
   },
   methods: {
     getFileList() {
-      this.fileList = JSON.parse(this.$common.getFileList())
+      if (this.user) {
+        console.log(this.$api)
+        this.$api.file.myFile().then((res) => {
+          this.fileList = res.data;
+        });
+        return;
+      }
+      this.fileList = JSON.parse(this.$common.getFileList());
     },
     deleteFile(index) {
-      this.fileList.splice(index, 1)
-      this.$common.removeFileItem(index)
+      this.fileList.splice(index, 1);
+      this.$common.removeFileItem(index);
     },
     pickup(item) {
-      this.item = item
-      this.receive()
+      this.item = item;
+      this.receive();
     },
     receive() {
-      this.$api.file.receive({ code: this.item.code }).then(res => {
-        if (res.status == 'password') {
-          this.$router.push({ name: "receive", params: { code: this.item.code } })
+      this.$api.file.receive({ code: this.item.code }).then((res) => {
+        if (res.status == "password") {
+          this.$router.push({
+            name: "receive",
+            params: { code: this.item.code },
+          });
         } else if (res.status == "error") {
-          alert(res.data)
+          alert(res.data);
         } else {
-          if (res.data.type == 'txt') {
-            this.$router.push({ name: 'text', params: { data: res.data.content } })
-            return
+          if (res.data.type == "txt") {
+            this.$router.push({
+              name: "text",
+              params: { data: res.data.content },
+            });
+            return;
           }
-          const content = res.data.content
+          const content = res.data.content;
           if (content.length == 1) {
             window.open(content[0].url);
-            return
+            return;
           }
-          this.$router.push({ name: "pick", params: { fileList: content } })
+          this.$router.push({ name: "pick", params: { fileList: content } });
         }
-      })
-
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

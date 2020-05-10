@@ -9,6 +9,9 @@ const userApi = {
     },
     receive(params) {
         return axios.get("/receive", params)
+    },
+    myFile(params) {
+        return axios.get("/myFile", params)
     }
 }
 

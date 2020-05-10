@@ -23,7 +23,7 @@ export default {
   color: #fff;
   cursor: pointer;
   font-size: small;
-  margin-top: 15px;
+  // margin-top: 15px;
   padding: 10px 35px;
   transition: all 0.25s;
   outline: none;

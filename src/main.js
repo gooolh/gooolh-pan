@@ -7,7 +7,7 @@ import toast from '@/components/toast'
 import api from './api'
 import router from "./router.js" 
 Vue.config.productionTip = false
-Vue.prototype.$common=common
+Vue.prototype.$common=common.fun
 Vue.prototype.$api=api
 Vue.component('m-button', mButton)
 Vue.prototype.$bus = new Vue(); 

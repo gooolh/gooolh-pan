@@ -28,60 +28,78 @@
   </modal>
 </template>
 <script>
-import modal from './modal'
+import modal from "./modal";
 export default {
   components: {
-    modal
+    modal,
   },
   props: {
-    files: {}
+    files: {},
   },
   created() {
-    this.fileList = [].slice.call(this.files)
+    this.fileList = [].slice.call(this.files);
+    this.user = this.$common.getUser();
+  },
+  watch: {
+    num(val) {
+      if (!this.user.member && val > 10) {
+        this.$toast.error("需要更多的次数需要开通高级功能");
+        this.num = 10;
+      }
+    },
+    hour(val) {
+      if (!this.user.member && val > 24) {
+        this.$toast.error("需要更久的保存需要开通高级功能");
+        this.hour = 24;
+      }
+    },
   },
   data() {
     return {
       num: 2,
       hour: 24,
-      password: '',
-      user: ''
-    }
+      password: "",
+      user: "",
+    };
   },
   methods: {
     upload() {
       if (this.fileList.length > 1 && !this.user.member) {
-        alert("批量上传文件需要开通高级账号")
-        this.uesr?'':this.$router.push("login")
-        return
+        alert("批量上传文件需要开通高级账号");
+        if (!this.user) {
+          this.$router.push("login");
+        }
+        return;
       }
-      let formData = new FormData()
-      formData.append("password", this.password)
-      formData.append('maxDownloadNum', this.num)
-      formData.append("hour", this.hour)
-      formData.append('point', "south")
-      this.fileList.forEach(item => {
-        formData.append('files', item);
-      })
+      let formData = new FormData();
+      formData.append("password", this.password);
+      formData.append("maxDownloadNum", this.num);
+      formData.append("hour", this.hour);
+      const endPoint = this.$common.getEndPoint();
+      formData.append("point", endPoint != "" ? endPoint : "south");
+      this.fileList.forEach((item) => {
+        formData.append("files", item);
+      });
       // formData.append('files', this.fileList[0])
-      this.$api.file.uploadFile(formData).then(res => {
-        if (res.status === 'success') {
-          let fileName = []
-          this.fileList.forEach(item => {
-            fileName.push(item.name)
-          })
+      this.$api.file.uploadFile(formData).then((res) => {
+        if (res.status === "success") {
+          let fileName = [];
+          this.fileList.forEach((item) => {
+            fileName.push(item.name);
+          });
           const file = {
             code: res.data,
-            fileName: fileName.join(",")
-          }
-          this.$common.addFileList(file)
-          this.$router.push({ name: 'successTip', params: { code: res.data } })
-          return
+            fileName: fileName.join(","),
+          };
+          this.$common.addFileList(file);
+          this.$router.push({ name: "successTip", params: { code: res.data } });
+          return;
         }
-        this.$toast.error(res.data)
-      })
-    }
-  }
-}
+        this.$toast.error(res.data);
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss">

@@ -9,6 +9,9 @@ const userApi = {
     },
     register(params) {
         return axios.post("/register", params)
+    },
+    verification(params){
+        return axios.post("/verification", params)
     }
 }
 

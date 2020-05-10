@@ -1,55 +1,62 @@
-
-function saveUser(val){
-    localStorage.setItem("user",val)
-}
-function getUser(){
-    localStorage.getItem("user")
-}
-function verEmail(email) {
-    const reg = /^[\da-z]+([\\-\\.\\_]?[\da-z]+)*@[\da-z]+([\\-\\.]?[\da-z]+)*(\.[a-z]{2,})+$/i;
-    return reg.test(email)
-}
-function addFileList(file) {
-    const key = "fileList"
-    let pre = localStorage.getItem(key)
-    if (pre) {
+const userKey = "user"
+const endPoint = "endPoint"
+const fun = {
+    getEndPoint() {
+        return localStorage.getItem(endPoint)
+    },
+    saveEndPoint(val) {
+        localStorage.setItem(endPoint, val)
+    },
+    saveUser(val) {
+        localStorage.setItem(userKey, JSON.stringify(val))
+    },
+    getUser() {
+        return JSON.parse(localStorage.getItem(userKey));
+    },
+    removeUser() {
+        localStorage.removeItem("token")
+        localStorage.removeItem(userKey)
+    },
+    verEmail(email) {
+        const reg = /^[\da-z]+([\\-\\.\\_]?[\da-z]+)*@[\da-z]+([\\-\\.]?[\da-z]+)*(\.[a-z]{2,})+$/i;
+        return reg.test(email)
+    },
+    addFileList(file) {
+        const key = "fileList"
+        let pre = localStorage.getItem(key)
+        if (pre) {
+            pre = JSON.parse(pre)
+            pre.unshift(file)
+            localStorage.setItem(key, JSON.stringify(pre))
+            return
+        }
+        localStorage.setItem(key, JSON.stringify([file]))
+    },
+    removeFileItem(index) {
+        const key = "fileList"
+        let pre = localStorage.getItem(key)
+        if (!pre) {
+            return
+        }
         pre = JSON.parse(pre)
-        pre.unshift(file)
+        pre.splice(index, 1)
         localStorage.setItem(key, JSON.stringify(pre))
-        return
+    },
+    getFileList() {
+        const key = "fileList"
+        return localStorage.getItem(key)
+    },
+    setItem(key, obj) {
+        localStorage.setItem(key, obj)
+    },
+    removeItem(key, type = 'item') {
+        if (type == 'all') {
+            localStorage.clear()
+        }
+        localStorage.removeItem(key)
     }
-    localStorage.setItem(key, JSON.stringify([file]))
 }
-function removeFileItem(index){
-    const key = "fileList"
-    let pre = localStorage.getItem(key)
-    if(!pre){
-        return
-    }
-    pre=JSON.parse(pre)
-    pre.splice(index,1)
-    localStorage.setItem(key, JSON.stringify(pre))
-}
-function getFileList() {
-    const key = "fileList"
-    return localStorage.getItem(key)
-}
-function setItem(key, obj) {
-    localStorage.setItem(key, obj)
-}
-function removeItem(key, type = 'item') {
-    if (type == 'all') {
-        localStorage.clear()
-    }
-    localStorage.removeItem(key)
-}
+
 export default {
-    verEmail,
-    setItem,
-    removeItem,
-    removeFileItem,
-    addFileList,
-    getFileList,
-    saveUser,
-    getUser
+    fun
 }

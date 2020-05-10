@@ -15,6 +15,9 @@
         <div class="menu-item" v-show="user" @click="account">
           我的账号
         </div>
+        <div class="menu-item" v-show="user" @click="logout">
+          退出登陆
+        </div>
         <router-link to="myfile">
           <div class="menu-item">
             我的文件
@@ -53,11 +56,11 @@ export default {
   data() {
     return {
       toggle: false,
-      currentServer: "goolh",
+      currentServer: "south",
       user: "",
       serve: [
         {
-          id: "goolh",
+          id: "south",
           name: "华南服务器",
         },
         {
@@ -71,20 +74,33 @@ export default {
     this.$bus.$on("login", (data) => {
       this.user = data;
     });
-    this.$api.user.init().then((res) => {
-      if (res.status == "success") {
-        this.user = res.data;
-        this.$bus.$emit("user", this.user);
+    console.log(this.$common.getEndPoint())
+    this.currentServer=this.$common.getEndPoint()
+    this.user = this.$common.getUser();
+    this.$api.user.init().then(
+      (res) => {
+        if (res == "error") {
+          this.logout();
+        }
+      },
+      () => {
+        this.logout();
       }
-    });
+    );
   },
   methods: {
+    logout() {
+      this.$toast.info("退出成功");
+      this.$common.removeUser();
+      this.user = "";
+    },
     account() {
       this.$router.push({ name: "account", params: { user: this.user } });
     },
     changeServe(item) {
+      console.log(item)
       this.currentServer = item.id;
-      this.$bus.$emit("server", this.currentServer);
+      this.$common.saveEndPoint(this.currentServer)
     },
     toggleMenu() {
       this.toggle = !this.toggle;
