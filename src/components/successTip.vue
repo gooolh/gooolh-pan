@@ -1,22 +1,33 @@
 <template>
   <modal @confirm="finsh">
-    <div class="tip-warp f-c">
-      <p class="tip1">文件已成功发送</p>
-      <p class="tip2">你的取货码</p>
-      <p class="code">{{ code }}</p>
-      <p class="tip2">接收文件时，请输入该6位数取件码</p>
-      <div class="tip2">
-        <span>你也可以 或 </span>
-        <a class="primary copy" @click="copy">复制下载链接</a>
-        <span> 或 </span>
-        <a class="primary copy">直接扫描二维码下载</a>
+    <span class="back" v-show="showQRcode" @click="hideQRcode"></span>
+    <transition name="left">
+      <div class="tip-warp f-c" v-show="!showQRcode">
+        <p class="tip1">文件已成功发送</p>
+        <p class="tip2">你的取货码</p>
+        <p class="code">{{ code }}</p>
+        <p class="tip2">接收文件时，请输入该6位数取件码</p>
+        <div class="tip2">
+          <span>你也可以 或 </span>
+          <a class="primary copy" @click="copy" v-clipboard:copy="code"
+            >复制下载链接</a
+          >
+          <span> 或 </span>
+          <a class="primary copy" @click="createQRcode">直接扫描二维码下载</a>
+        </div>
       </div>
-    </div>
+    </transition>
+    <transition name="right">
+      <div style="margin:auto" v-show="showQRcode" ref="qrCodeUrl">
+
+      </div>
+    </transition>
   </modal>
 </template>
 
 <script>
 import modal from "./modal";
+import QRCode from "qrcodejs2";
 export default {
   components: {
     modal,
@@ -25,7 +36,9 @@ export default {
     code: {},
   },
   data() {
-    return {};
+    return {
+      showQRcode: false,
+    };
   },
   methods: {
     finsh() {
@@ -34,6 +47,21 @@ export default {
     },
     copy() {
       this.$toast.info("复制成功");
+    },
+    createQRcode() {
+      this.showQRcode = true;
+      const qrurl="http://47.96.152.87/"+this.code
+      new QRCode(this.$refs.qrCodeUrl, {
+        text: qrurl,
+        width: 100,
+        height: 100,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H,
+      });
+    },
+    hideQRcode() {
+      this.showQRcode = false;
     },
   },
 };

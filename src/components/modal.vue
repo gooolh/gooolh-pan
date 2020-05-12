@@ -20,37 +20,36 @@
 export default {
   props: {
     icon: {
-      default: true
+      default: true,
     },
     confirmName: {
-      default: '完成'
+      default: "完成",
     },
     autoClose: {
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      toggle: true
-    }
+      toggle: true,
+    };
   },
   methods: {
     show() {
-      this.toggle = true
+      this.toggle = true;
     },
     hide() {
-      this.$router.push("/")
-      this.toggle = false
+      this.$router.push("/");
+      this.toggle = false;
     },
     confirm() {
-
       if (this.autoClose) {
-        this.hide()
+        this.hide();
       }
-      this.$emit("confirm")
-    }
-  }
-}
+      this.$emit("confirm");
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -123,5 +122,42 @@ export default {
     margin: -10px auto 10px;
     width: 65%;
   }
+}
+.back {
+  border-right: 3px solid rgba(0, 0, 0, 0.35);
+  border-top: 3px solid rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  height: 15px;
+  left: 50px;
+  position: absolute;
+  top: 45px;
+  transform: rotate(225deg);
+  transition: all 0.25s;
+  width: 15px;
+}
+.left-enter-active,
+.left-leave-active {
+  transition: all 0.3s ease;
+}
+.left-leave-to {
+  position: absolute;
+  opacity: 0;
+  transform: translateX(-500px);
+}
+.left-enter {
+  opacity: 0;
+  transform: translateX(-500px);
+}
+
+.right-enter-active,
+.right-leave-active {
+  transition: all 0.3s ease;
+}
+
+.right-enter,
+.right-leave-to {
+  position: absolute;
+  opacity: 0;
+  transform: translateX(500px);
 }
 </style>

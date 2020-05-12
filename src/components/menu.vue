@@ -74,19 +74,14 @@ export default {
     this.$bus.$on("login", (data) => {
       this.user = data;
     });
-    console.log(this.$common.getEndPoint())
-    this.currentServer=this.$common.getEndPoint()
+    console.log(this.$common.getEndPoint());
+    this.currentServer = this.$common.getEndPoint();
     this.user = this.$common.getUser();
-    this.$api.user.init().then(
-      (res) => {
-        if (res == "error") {
-          this.logout();
-        }
-      },
-      () => {
+    this.$api.user.init().then((res) => {
+      if (res == "error") {
         this.logout();
       }
-    );
+    });
   },
   methods: {
     logout() {
@@ -98,9 +93,9 @@ export default {
       this.$router.push({ name: "account", params: { user: this.user } });
     },
     changeServe(item) {
-      console.log(item)
+      console.log(item);
       this.currentServer = item.id;
-      this.$common.saveEndPoint(this.currentServer)
+      this.$common.saveEndPoint(this.currentServer);
     },
     toggleMenu() {
       this.toggle = !this.toggle;
@@ -116,8 +111,8 @@ export default {
 .menu {
   .icon {
     position: absolute;
-    width: 2rem;
-    height: 2rem;
+    width: 30px;
+    height: 30px;
     top: 25px;
     right: 25px;
     color: $theme-color;

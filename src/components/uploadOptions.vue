@@ -2,7 +2,7 @@
   <modal confirmName="上传" @confirm="upload">
     <div class="upload-options f-c">
       <div class="tip1">你选择了这些文件</div>
-      <div class="tip2">未登录</div>
+      <!-- <div class="tip2">未登录</div> -->
       <div class="file-list">
         <div class="item" v-for="(item, index) in files" :key="index">
           {{ item.name }}
@@ -76,7 +76,11 @@ export default {
       formData.append("maxDownloadNum", this.num);
       formData.append("hour", this.hour);
       const endPoint = this.$common.getEndPoint();
-      formData.append("point", endPoint != "" ? endPoint : "south");
+      console.log(endPoint)
+      formData.append(
+        "point",
+        endPoint != "" && endPoint != null ? endPoint : "south"
+      );
       this.fileList.forEach((item) => {
         formData.append("files", item);
       });

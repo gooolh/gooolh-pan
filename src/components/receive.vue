@@ -50,10 +50,16 @@ export default {
       password: ''
     }
   },
+  watch:{
+    $route(pre){
+      console.log(pre)
+    }
+  },
   created(){
-    if(this.$route.params.code){
-      this.code=this.$route.params.code
-      this.hasPassword=true
+    this.code=this.$route.params.code?this.$route.params.code:''
+    this.hasPassword=this.$route.params.needPassword?this.$route.params.needPassword:false
+    if(this.code){
+      this.receive()
     }
   },
   methods: {
@@ -92,18 +98,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.back {
-  border-right: 3px solid rgba(0, 0, 0, 0.35);
-  border-top: 3px solid rgba(0, 0, 0, 0.35);
-  cursor: pointer;
-  height: 15px;
-  left: 50px;
-  position: absolute;
-  top: 45px;
-  transform: rotate(225deg);
-  transition: all 0.25s;
-  width: 15px;
-}
+
 .receive-warp {
   .tip-box {
     display: flex;
@@ -133,29 +128,5 @@ export default {
     }
   }
 }
-.left-enter-active,
-.left-leave-active {
-  transition: all 0.3s ease;
-}
-.left-leave-to {
-  position: absolute;
-  opacity: 0;
-  transform: translateX(-500px);
-}
-.left-enter {
-  opacity: 0;
-  transform: translateX(-500px);
-}
 
-.right-enter-active,
-.right-leave-active {
-  transition: all 0.3s ease;
-}
-
-.right-enter,
-.right-leave-to {
-  position: absolute;
-  opacity: 0;
-  transform: translateX(500px);
-}
 </style>

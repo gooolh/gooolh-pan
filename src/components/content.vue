@@ -1,7 +1,13 @@
 <template>
   <div class="content-warp">
     <div class="logo"></div>
-    <div class="send-warp" @mouseenter="mouseenter" @mouseleave="mouseleave">
+    <div
+      class="send-warp"
+      @mouseenter="mouseenter"
+      @mouseleave="mouseleave"
+      @touchstart="touchstart"
+      @touchend="touchend"
+    >
       <button class="btn send" @click="uploadFile('file')">发送</button>
       <input
         multiple
@@ -37,6 +43,12 @@ export default {
   components: {
     fly,
   },
+  created(){
+    const arr=location.href.split('/')
+    if(arr[arr.length-1]){
+      this.$router.push({name:'receive',params:{code:arr[arr.length-1]}})
+    }
+  },
   mounted() {
     this.$bus.$on("fly", (data) => {
       this.code = data;
@@ -57,13 +69,30 @@ export default {
       code: "",
       receiveContent: "",
       showItem: false,
+      loop: "",
     };
   },
   methods: {
     fly() {
       this.$refs.fly.start();
     },
+    touchstart() {
+      if (this.$common.isMobile()) {
+        clearTimeout(this.loop);
+        this.loop = setTimeout(() => {
+          this.showItem = true;
+        }, 1000);
+      }
+    },
+    touchend() {
+      if (this.$common.isMobile()) {
+        clearTimeout(this.loop);
+      }
+    },
     mouseenter() {
+      if (this.$common.isMobile()) {
+        return;
+      }
       this.showItem = true;
     },
     mouseleave() {

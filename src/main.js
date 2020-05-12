@@ -6,6 +6,9 @@ import common from '@/util/common.js'
 import toast from '@/components/toast'
 import api from './api'
 import router from "./router.js" 
+import VueClipboard from 'vue-clipboard2'
+VueClipboard.config.autoSetContainer = true
+Vue.use(VueClipboard)
 Vue.config.productionTip = false
 Vue.prototype.$common=common.fun
 Vue.prototype.$api=api

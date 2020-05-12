@@ -38,7 +38,6 @@ export default {
   methods: {
     getFileList() {
       if (this.user) {
-        console.log(this.$api)
         this.$api.file.myFile().then((res) => {
           this.fileList = res.data;
         });
@@ -59,7 +58,7 @@ export default {
         if (res.status == "password") {
           this.$router.push({
             name: "receive",
-            params: { code: this.item.code },
+            params: { code: this.item.code,needPassword:true },
           });
         } else if (res.status == "error") {
           alert(res.data);
