@@ -1,4 +1,17 @@
 //默认主题
-$theme-color:#4191F5;
+$theme-color: #4191f5;
 $theme-bg-color: #fafafa;
-$theme-hover-color:#1b6ace;
+$theme-hover-color: #1b6ace;
+
+@media (prefers-color-scheme: dark) {
+  $theme-color: red;
+  $theme-bg-color: #fafafa;
+  $theme-hover-color: #1b6ace;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --theme-color: #4191f5;
+    --theme-bg-color: #fafafa;
+    --theme-hover-color: #1b6ace;
+  }
+}

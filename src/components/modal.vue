@@ -9,6 +9,7 @@
 
     <slot></slot>
     <m-button
+      v-if="confirmName"
       class="c-btn"
       :text="confirmName"
       @click.native="confirm"

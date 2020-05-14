@@ -45,7 +45,7 @@ export default {
   },
   created(){
     const arr=location.href.split('/')
-    if(arr[arr.length-1]){
+    if(/\d{6}/.test(arr[arr.length-1])){
       this.$router.push({name:'receive',params:{code:arr[arr.length-1]}})
     }
   },
@@ -183,7 +183,7 @@ export default {
     width: 224px;
   }
   .send {
-    background-color: $theme-color;
+    background-color: var(--theme-color);
     box-shadow: rgba(65, 145, 245, 0.3) 0 5px 20px;
     color: #fff;
     transition: color 0.25s, background-color 0.25s, opacity 0.25s,
