@@ -90,29 +90,32 @@ export default {
         return;
       }
       const endPoint = this.$common.getEndPoint();
-      let filename=[]
-      this.fileList.forEach(item=>{
-        filename.push(item.name.replace(",","#"))
-      })
+      let filename = [];
+      this.fileList.forEach((item) => {
+        filename.push(item.name.replace(",", "#"));
+      });
       const params = {
         password: this.password,
         maxDownloadNum: this.num,
         hour: this.hour,
         point: endPoint != "" && endPoint != null ? endPoint : "south",
-        filename:filename
+        filename: filename,
       };
       this.$api.file.getCode(params).then((res) => {
         if (res.status === "success") {
           this.uploadParams = res.data;
           for (let index = 0; index < this.fileList.length; index++) {
-              this.upload(index)
+            this.upload(index);
           }
           const file = {
             code: res.data,
             fileName: filename.join(","),
           };
           this.$common.addFileList(file);
-          this.$router.push({ name: "successTip", params: { code: res.data.code } });
+          this.$router.push({
+            name: "successTip",
+            params: { code: res.data.code },
+          });
           return;
         }
         this.$toast.error(res.data);
