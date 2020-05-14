@@ -12,6 +12,9 @@ const userApi = {
     },
     myFile(params) {
         return axios.get("/myFile", params)
+    },
+    getCode(params){
+        return axios.post("/getCode", params)
     }
 }
 

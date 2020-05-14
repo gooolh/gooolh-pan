@@ -1,5 +1,5 @@
 <template>
-  <modal confirmName="上传" @confirm="upload">
+  <modal confirmName="上传" @confirm="getCode">
     <div class="upload-options f-c">
       <div class="tip1">你选择了这些文件</div>
       <!-- <div class="tip2">未登录</div> -->
@@ -29,6 +29,7 @@
 </template>
 <script>
 import modal from "./modal";
+import axios from "axios";
 export default {
   components: {
     modal,
@@ -60,10 +61,27 @@ export default {
       hour: 24,
       password: "",
       user: "",
+      uploadParams: "",
     };
   },
   methods: {
-    upload() {
+    upload(index) {
+      let formData = new FormData();
+      Object.keys(this.uploadParams).forEach((key) => {
+        if (key == "key") {
+          formData.append(key, this.uploadParams[key] + this.fileList[0].name);
+          return;
+        }
+        formData.append(key, this.uploadParams[key]);
+      });
+      console.log(this.fileList[0]);
+      formData.append("file", this.fileList[index]);
+      const instance = axios.create({ timeout: 1000 * 12 });
+      instance.post(this.uploadParams.host, formData).then((res) => {
+        console.log(res);
+      });
+    },
+    getCode() {
       if (this.fileList.length > 1 && !this.user.member) {
         alert("批量上传文件需要开通高级账号");
         if (!this.user) {
@@ -71,32 +89,30 @@ export default {
         }
         return;
       }
-      let formData = new FormData();
-      formData.append("password", this.password);
-      formData.append("maxDownloadNum", this.num);
-      formData.append("hour", this.hour);
       const endPoint = this.$common.getEndPoint();
-      console.log(endPoint)
-      formData.append(
-        "point",
-        endPoint != "" && endPoint != null ? endPoint : "south"
-      );
-      this.fileList.forEach((item) => {
-        formData.append("files", item);
-      });
-      // formData.append('files', this.fileList[0])
-      this.$api.file.uploadFile(formData).then((res) => {
+      let filename=[]
+      this.fileList.forEach(item=>{
+        filename.push(item.name.replace(",","#"))
+      })
+      const params = {
+        password: this.password,
+        maxDownloadNum: this.num,
+        hour: this.hour,
+        point: endPoint != "" && endPoint != null ? endPoint : "south",
+        filename:filename
+      };
+      this.$api.file.getCode(params).then((res) => {
         if (res.status === "success") {
-          let fileName = [];
-          this.fileList.forEach((item) => {
-            fileName.push(item.name);
-          });
+          this.uploadParams = res.data;
+          for (let index = 0; index < this.fileList.length; index++) {
+              this.upload(index)
+          }
           const file = {
             code: res.data,
-            fileName: fileName.join(","),
+            fileName: filename.join(","),
           };
           this.$common.addFileList(file);
-          this.$router.push({ name: "successTip", params: { code: res.data } });
+          this.$router.push({ name: "successTip", params: { code: res.data.code } });
           return;
         }
         this.$toast.error(res.data);

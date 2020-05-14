@@ -112,8 +112,8 @@ export default {
     changeFile(e) {
       const files = e.target.files;
       var fileSize = Math.round(files[0].size / 1024);
-      if (fileSize > 2048) {
-        alert("文件大小不能大于2m");
+      if (fileSize > 1024*50) {
+        alert("文件大小不能大于50m");
         return;
       }
       this.$router.push({ name: "uploadOptions", params: { files: files } });
