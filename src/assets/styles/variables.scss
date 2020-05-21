@@ -1,17 +1,53 @@
-//默认主题
-$theme-color: #4191f5;
-$theme-bg-color: #fafafa;
-$theme-hover-color: #1b6ace;
-
-@media (prefers-color-scheme: dark) {
-  $theme-color: red;
-  $theme-bg-color: #fafafa;
-  $theme-hover-color: #1b6ace;
+// @media (prefers-color-scheme: dark) {
+//     :root {
+//       --theme-color: #4191f5;
+//       --theme-bg-color: rgb(50, 50, 50);
+//       --theme-hover-color: #1b6ace;
+//       --theme-modal-color: rgb(30, 30, 30);
+//       --theme-alpha-color: rgba(255, 255, 255, 0.05);
+//       --theme-text-color: #fff;
+//       --theme-input-bg: rgba(255, 255, 255, 0.1);
+//       --theme-border-bg: rgba(255, 255, 255, .1);
+//     }
+// }
+// @media (prefers-color-scheme: light) {
+//   :root {
+//     --theme-color: #4191f5;
+//     --theme-bg-color: #fafafa;
+//     --theme-hover-color: #1b6ace;
+//     --theme-modal-color: #fff;
+//     --theme-alpha-color: rgba(0, 0, 0, 0.05);
+//     --theme-text-color: #000;
+//     --theme-input-bg: rgba(0, 0, 0, 0.1);
+//     --theme-border-bg: rgba(0, 0, 0, 0.1);
+//   }
+// }
+body.light {
+  --theme-color: #4191f5;
+  --theme-bg-color: #fafafa;
+  --theme-hover-color: #1b6ace;
+  --theme-modal-color: #fff;
+  --theme-alpha-color: rgba(0, 0, 0, 0.05);
+  --theme-text-color: #000;
+  --theme-input-bg: rgba(0, 0, 0, 0.1);
+  --theme-border-bg: rgba(0, 0, 0, 0.1);
 }
-@media (prefers-color-scheme: light) {
-  :root {
-    --theme-color: #4191f5;
-    --theme-bg-color: #fafafa;
-    --theme-hover-color: #1b6ace;
-  }
+body.dark {
+  --theme-color: #4191f5;
+  --theme-bg-color: rgb(50, 50, 50);
+  --theme-hover-color: #1b6ace;
+  --theme-modal-color: rgb(30, 30, 30);
+  --theme-alpha-color: rgba(255, 255, 255, 0.05);
+  --theme-text-color: #fff;
+  --theme-input-bg: rgba(255, 255, 255, 0.1);
+  --theme-border-bg: rgba(255, 255, 255, 0.1);
+}
+
+input {
+  background-color: var(--theme-modal-color);
+  border: 1px solid var(--theme-input-bg);
+  color: var(--theme-text-color);
+}
+textarea {
+  background-color: var(--theme-alpha-color);
 }

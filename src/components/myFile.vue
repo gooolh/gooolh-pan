@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import modal from "./modal";
+import modal from './modal'
 export default {
   components: {
     modal,
@@ -27,60 +27,60 @@ export default {
   data() {
     return {
       fileList: [],
-      item: "",
-      user: "",
-    };
+      item: '',
+      user: '',
+    }
   },
   created() {
-    this.user = this.$common.getUser();
-    this.getFileList();
+    this.user = this.$common.getUser()
+    this.getFileList()
   },
   methods: {
     getFileList() {
       if (this.user) {
         this.$api.file.myFile().then((res) => {
-          this.fileList = res.data;
-        });
-        return;
+          this.fileList = res.data
+        })
+        return
       }
-      this.fileList = JSON.parse(this.$common.getFileList());
+      this.fileList = JSON.parse(this.$common.getFileList())
     },
     deleteFile(index) {
-      this.fileList.splice(index, 1);
-      this.$common.removeFileItem(index);
+      this.fileList.splice(index, 1)
+      this.$common.removeFileItem(index)
     },
     pickup(item) {
-      this.item = item;
-      this.receive();
+      this.item = item
+      this.receive()
     },
     receive() {
       this.$api.file.receive({ code: this.item.code }).then((res) => {
-        if (res.status == "password") {
+        if (res.status == 'password') {
           this.$router.push({
-            name: "receive",
-            params: { code: this.item.code,needPassword:true },
-          });
-        } else if (res.status == "error") {
-          alert(res.data);
+            name: 'receive',
+            params: { code: this.item.code, needPassword: true },
+          })
+        } else if (res.status == 'error') {
+          alert(res.data)
         } else {
-          if (res.data.type == "txt") {
+          if (res.data.type == 'txt') {
             this.$router.push({
-              name: "text",
+              name: 'text',
               params: { data: res.data.content },
-            });
-            return;
+            })
+            return
           }
-          const content = res.data.content;
+          const content = res.data.content
           if (content.length == 1) {
-            window.open(content[0].url);
-            return;
+            window.open(content[0].url)
+            return
           }
-          this.$router.push({ name: "pick", params: { fileList: content } });
+          this.$router.push({ name: 'pick', params: { fileList: content } })
         }
-      });
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -89,27 +89,27 @@ export default {
     margin-bottom: 20px;
   }
   .file-list {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--theme-border-bg);
+    border-top: 1px solid var(--theme-border-bg);
     height: 210px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     width: 65%;
     font-size: small;
     margin: auto;
+    color: var(--theme-text-color);
     .item {
-      border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+      border-bottom: solid 1px var(--theme-border-bg);
       font-weight: 700;
       padding: 10px 0;
       position: relative;
       text-align: left;
       a {
-        color: #000;
         cursor: pointer;
         display: inline-block;
         line-height: 18px;
       }
       .t {
-        color: rgba(0, 0, 0, 0.5);
         font-size: 10px;
         font-weight: 400;
         line-height: 17px;
@@ -125,7 +125,7 @@ export default {
         cursor: pointer;
         &::after {
           background-color: #c8c8c8;
-          content: "";
+          content: '';
           height: 1px;
           left: 0;
           position: absolute;
@@ -136,7 +136,7 @@ export default {
         }
         &::before {
           background-color: #c8c8c8;
-          content: "";
+          content: '';
           height: 1px;
           left: 0;
           position: absolute;

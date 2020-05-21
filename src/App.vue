@@ -23,11 +23,23 @@ export default {
   components: {
     myMenu,
     mFooter,
-    mainView
+    mainView,
   },
   data() {
     return {
-      animation: "boom"
+      animation: 'boom',
+    }
+  },
+  created() {
+    const theme = localStorage.getItem('theme')
+    if (theme) {
+      document.getElementsByTagName('body')[0].className = theme
+    } else {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.getElementsByTagName('body')[0].className = 'dark'
+      } else {
+        document.getElementsByTagName('body')[0].className = 'light'
+      }
     }
   },
   watch: {
@@ -35,8 +47,8 @@ export default {
       if (to.meta.animation) {
         this.animation = to.meta.animation
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -46,7 +58,7 @@ export default {
   font-family: PingFangSC-Light, microsoft yahei light, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: $theme-bg-color;
+  background-color: var(--theme-bg-color);
   height: 100vh;
   width: 100%;
 }

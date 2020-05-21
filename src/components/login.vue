@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import modal from "./modal";
+import modal from './modal'
 export default {
   components: {
     modal,
@@ -40,62 +40,62 @@ export default {
   data() {
     return {
       needRegister: false,
-      email: "",
-      password: "",
-    };
+      email: '',
+      password: '',
+    }
   },
   methods: {
     sub() {
       if (!this.$common.verEmail(this.email)) {
-        this.$toast.error("请输入正确的邮箱");
-        this.$refs.email.focus();
-        return;
+        this.$toast.error('请输入正确的邮箱')
+        this.$refs.email.focus()
+        return
       }
       if (this.password.length < 6) {
-        this.$refs.password.focus();
-        this.$toast.error("账户或密码错误");
-        return;
+        this.$refs.password.focus()
+        this.$toast.error('账户或密码错误')
+        return
       }
-      this.needRegister ? this.register() : this.login();
+      this.needRegister ? this.register() : this.login()
     },
     toggleRegister() {
-      this.needRegister = !this.needRegister;
+      this.needRegister = !this.needRegister
     },
     login() {
       const params = {
         email: this.email,
         password: this.password,
-      };
+      }
       this.$api.user.login(params).then((res) => {
-        if (res.status == "error") {
-          this.$toast.error(res.data);
-          return;
+        if (res.status == 'error') {
+          this.$toast.error(res.data)
+          return
         }
-        this.$toast.info("登陆成功");
-        const data = res.data;
-        localStorage.setItem("token", data.token);
-        delete data.token;
-        this.$common.saveUser(data);
-        this.$bus.$emit("login", { email: this.email });
-        this.$router.push("/");
-      });
+        this.$toast.info('登陆成功')
+        const data = res.data
+        localStorage.setItem('token', data.token)
+        delete data.token
+        this.$common.saveUser(data)
+        this.$bus.$emit('login', { email: this.email })
+        this.$router.push('/')
+      })
     },
     register() {
       const params = {
         email: this.email,
         password: this.password,
-      };
+      }
       this.$api.user.register(params).then((res) => {
-        if (res.status == "error") {
-          this.$toast.error(res.data);
-          return;
+        if (res.status == 'error') {
+          this.$toast.error(res.data)
+          return
         }
-        this.needRegister = false;
-        this.$toast.info(res.data);
-      });
+        this.needRegister = false
+        this.$toast.info(res.data)
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -112,38 +112,32 @@ export default {
   }
   .register {
     cursor: pointer;
-    color: $theme-color;
+    color: var(--theme-color);
   }
   .tip {
-    color: rgba(0, 0, 0, 0.5);
+    color: var(theme-text-color);
     font-size: 12px;
   }
   .h-input {
     padding: 4px 11px;
-    color: rgba(0, 0, 0, 0.65);
     font-size: 14px;
     width: 56%;
-    // background-color: #fff;
-    // border: 1px solid #d9d9d9;
     margin: 7px auto;
     box-sizing: border-box;
     border-radius: 24px;
     text-align: center;
-    background-color: #f1f1f1;
-    border: none;
     height: 36px;
     outline: none;
     transition: all 0.5s;
     &:focus {
-      box-shadow: 0 0 0 1px $theme-color;
-      background-color: #fff;
+      box-shadow: 0 0 0 1px var(--theme-color);
     }
     &:active {
       transform: scale(1.1);
     }
   }
   .login-btn {
-    background-color: $theme-color;
+    background-color: var(--theme-color);
     border-radius: 20px;
     color: #fff;
     margin: 7px auto;

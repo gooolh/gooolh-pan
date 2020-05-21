@@ -86,7 +86,7 @@ export default {
     outline: none;
     transition: all 0.5s;
     &:focus {
-      box-shadow: 0 0 0 1px $theme-color;
+      box-shadow: 0 0 0 1px var(--theme-color);
 
       background-color: #fff;
     }
@@ -97,6 +97,6 @@ export default {
 }
 .g{
   font-size: 13px;
-  color: $theme-color;
+  color: var(--theme-color);
 }
 </style>

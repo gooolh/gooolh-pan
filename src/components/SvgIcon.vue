@@ -10,11 +10,11 @@ export default {
   props: {
     iconClass: {
       type: String,
-      required: true
+      required: true,
     },
     className: {
-      type: String
-    }
+      type: String,
+    },
   },
   computed: {
     iconName() {
@@ -26,15 +26,15 @@ export default {
       } else {
         return 'svg-icon'
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style >
+<style>
 .svg-icon {
-  width: 1rem;
-  height: 1rem;
+  width: 30px;
+  height: 30px;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;

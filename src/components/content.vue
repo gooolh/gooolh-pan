@@ -25,9 +25,7 @@
       />
       <div class="order-item" v-show="showItem">
         <div>或者</div>
-        <router-link to="/text">
-          <div class="i">文本</div>
-        </router-link>
+        <div class="i" @click="goText">文本</div>
         <div class="i" @click="uploadFile('folder')">文件夹</div>
       </div>
     </div>
@@ -38,88 +36,94 @@
   </div>
 </template>
 <script>
-import fly from "@/components/fly";
+import fly from '@/components/fly'
 export default {
   components: {
     fly,
   },
-  created(){
-    const arr=location.href.split('/')
-    if(/\d{6}/.test(arr[arr.length-1])){
-      this.$router.push({name:'receive',params:{code:arr[arr.length-1]}})
+  created() {
+    const arr = location.href.split('/')
+    if (/\d{6}/.test(arr[arr.length - 1])) {
+      this.$router.push({
+        name: 'receive',
+        params: { code: arr[arr.length - 1] },
+      })
     }
   },
   mounted() {
-    this.$bus.$on("fly", (data) => {
-      this.code = data;
-      this.fly();
-    });
+    this.$bus.$on('fly', (data) => {
+      this.code = data
+      this.fly()
+    })
   },
   watch: {
     $route(to, from) {
-      if (from.name == "uploadOptions") {
-        this.$refs.file.value = null;
-        this.$refs.folder.value = null;
+      if (from.name == 'uploadOptions') {
+        this.$refs.file.value = null
+        this.$refs.folder.value = null
       }
     },
   },
   data() {
     return {
       files: [],
-      code: "",
-      receiveContent: "",
+      code: '',
+      receiveContent: '',
       showItem: false,
-      loop: "",
-    };
+      loop: '',
+    }
   },
   methods: {
+    goText() {
+      this.$router.push('text')
+    },
     fly() {
-      this.$refs.fly.start();
+      this.$refs.fly.start()
     },
     touchstart() {
       if (this.$common.isMobile()) {
-        clearTimeout(this.loop);
+        clearTimeout(this.loop)
         this.loop = setTimeout(() => {
-          this.showItem = true;
-        }, 1000);
+          this.showItem = true
+        }, 1000)
       }
     },
     touchend() {
       if (this.$common.isMobile()) {
-        clearTimeout(this.loop);
+        clearTimeout(this.loop)
       }
     },
     mouseenter() {
       if (this.$common.isMobile()) {
-        return;
+        return
       }
-      this.showItem = true;
+      this.showItem = true
     },
     mouseleave() {
-      this.showItem = false;
+      this.showItem = false
     },
     pickup(data) {
-      this.$refs.receive.$children[0].hide();
-      if (data.type == "txt") {
-        this.receiveContent = data.content;
-        this.$refs.sendText.$children[0].show();
+      this.$refs.receive.$children[0].hide()
+      if (data.type == 'txt') {
+        this.receiveContent = data.content
+        this.$refs.sendText.$children[0].show()
       }
     },
     uploadFile(type) {
-      this.showItem = false;
-      this.$refs[type].dispatchEvent(new MouseEvent("click"));
+      this.showItem = false
+      this.$refs[type].dispatchEvent(new MouseEvent('click'))
     },
     changeFile(e) {
-      const files = e.target.files;
-      var fileSize = Math.round(files[0].size / 1024);
-      if (fileSize > 1024*50) {
-        alert("文件大小不能大于50m");
-        return;
+      const files = e.target.files
+      var fileSize = Math.round(files[0].size / 1024)
+      if (fileSize > 1024 * 50) {
+        alert('文件大小不能大于50m')
+        return
       }
-      this.$router.push({ name: "uploadOptions", params: { files: files } });
+      this.$router.push({ name: 'uploadOptions', params: { files: files } })
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
@@ -146,25 +150,25 @@ export default {
       border-radius: 30px;
       padding: 0 10px;
       box-shadow: rgba(0, 0, 0, 0.1) 0 5px 35px;
-      color: rgba(0, 0, 0, 0.6);
       font-size: 14px;
       transition: all 0.25s;
       white-space: nowrap;
       z-index: 7;
       display: flex;
       justify-content: center;
+      background-color: var(--theme-bg-color);
+      color: var(--theme-text-color);
       & > div:first-child {
-        color: $theme-color;
+        color: var(--theme-color);
       }
       div {
         padding: 10px;
         transition: all 0.25s;
       }
       .i {
-        color: rgba(0, 0, 0, 0.6);
         &:hover {
           cursor: pointer;
-          background-color: $theme-color;
+          background-color: var(--theme-color);
           color: #fff;
         }
       }
@@ -191,7 +195,7 @@ export default {
     &:active {
       background-color: #fff;
       box-shadow: rgba(65, 145, 245, 0.3) 0 5px 30px;
-      color: $theme-color;
+      color: var(--theme-color);
       &:hover {
         box-shadow: rgba(65, 145, 245, 0.5) 0 5px 30px;
       }
@@ -201,12 +205,12 @@ export default {
     background-color: #fff;
     border: none;
     box-shadow: rgba(65, 145, 245, 0.2) 0 5px 20px;
-    color: $theme-color;
+    color: var(--theme-color);
     &:hover {
       box-shadow: rgba(65, 145, 245, 0.3) 0 5px 30px;
     }
     &:active {
-      background-color: $theme-color;
+      background-color: var(--theme-color);
       box-shadow: rgba(65, 145, 245, 0.5) 0 5px 30px;
       color: #fff;
     }

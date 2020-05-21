@@ -24,7 +24,7 @@ export default {
       default: true,
     },
     confirmName: {
-      default: "完成",
+      default: '完成',
     },
     autoClose: {
       default: false,
@@ -33,24 +33,24 @@ export default {
   data() {
     return {
       toggle: true,
-    };
+    }
   },
   methods: {
     show() {
-      this.toggle = true;
+      this.toggle = true
     },
     hide() {
-      this.$router.push("/");
-      this.toggle = false;
+      this.$router.push('/')
+      this.toggle = false
     },
     confirm() {
       if (this.autoClose) {
-        this.hide();
+        this.hide()
       }
-      this.$emit("confirm");
+      this.$emit('confirm')
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
@@ -63,7 +63,7 @@ export default {
 }
 .s-modal {
   .primary {
-    color: $theme-color;
+    color: var(--theme-color);
   }
   .tip1 {
     font-size: 18px;
@@ -91,6 +91,8 @@ export default {
   width: 500px;
   height: 390px;
   text-align: center;
+  background-color: var(--theme-modal-color);
+  color: var(--theme-text-color);
   .close-icon {
     width: 30px;
     height: 30px;
@@ -99,7 +101,7 @@ export default {
     right: 25px;
     top: 25px;
     &:hover {
-      color: $theme-color;
+      color: var(--theme-color);
     }
   }
 }
@@ -118,7 +120,7 @@ export default {
 .tip-wrap {
   width: 100%;
   .line {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--theme-border-bg);
     height: 1px;
     margin: -10px auto 10px;
     width: 65%;

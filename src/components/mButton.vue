@@ -17,7 +17,7 @@ export default {
 
 <style lang="scss">
 .m-btn {
-  background-color: $theme-color;
+  background-color: var(--theme-color);
   border: none;
   border-radius: 20px;
   color: #fff;
@@ -32,7 +32,7 @@ export default {
   }
   &:active {
     background-color: #fff;
-    color: $theme-color;
+    color: var(--theme-color);
   }
 }
 </style>

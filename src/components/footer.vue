@@ -5,9 +5,7 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 <style lang="scss" scoped>
 .footer {
@@ -18,7 +16,7 @@ export default {
   width: 100%;
   .link {
     cursor: pointer;
-    color: $theme-color;
+    color: var(--theme-color);
   }
 }
 </style>

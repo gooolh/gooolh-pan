@@ -33,16 +33,15 @@
         :key="index"
       >
         <div class="progress-bar" :style="{ width: item + 'px' }">
-            {{ names[index] }}
+          {{ names[index] }}
         </div>
-      
       </div>
     </div>
   </modal>
 </template>
 <script>
-import modal from "./modal";
-import axios from "axios";
+import modal from './modal'
+import axios from 'axios'
 export default {
   components: {
     modal,
@@ -51,20 +50,20 @@ export default {
     files: {},
   },
   created() {
-    this.fileList = [].slice.call(this.files);
-    this.user = this.$common.getUser();
+    this.fileList = [].slice.call(this.files)
+    this.user = this.$common.getUser()
   },
   watch: {
     num(val) {
       if (!this.user.member && val > 10) {
-        this.$toast.error("需要更多的次数需要开通高级功能");
-        this.num = 10;
+        this.$toast.error('需要更多的次数需要开通高级功能')
+        this.num = 10
       }
     },
     hour(val) {
       if (!this.user.member && val > 24) {
-        this.$toast.error("需要更久的保存需要开通高级功能");
-        this.hour = 24;
+        this.$toast.error('需要更久的保存需要开通高级功能')
+        this.hour = 24
       }
     },
   },
@@ -72,104 +71,104 @@ export default {
     return {
       num: 2,
       hour: 24,
-      password: "",
-      user: "",
-      uploadParams: "",
+      password: '',
+      user: '',
+      uploadParams: '',
       showProgress: false,
       uploadProgress: [],
-      confirmName: "上传",
+      confirmName: '上传',
       names: [],
-      code: "",
-    };
+      code: '',
+    }
   },
   methods: {
     upload(index) {
-      const filename = this.names[index];
-      let formData = new FormData();
+      const filename = this.names[index]
+      let formData = new FormData()
       Object.keys(this.uploadParams).forEach((key) => {
-        if (key == "key") {
+        if (key == 'key') {
           formData.append(
             key,
-            this.uploadParams[key] + filename.replace(",", "#")
-          );
-          return;
+            this.uploadParams[key] + filename.replace(',', '#')
+          )
+          return
         }
-        formData.append(key, this.uploadParams[key]);
-      });
-      formData.append("file", this.fileList[index]);
-      const _this = this;
+        formData.append(key, this.uploadParams[key])
+      })
+      formData.append('file', this.fileList[index])
+      const _this = this
       var config = {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: function(e) {
-          console.log(index);
+          console.log(index)
           //  _this.uploadProgress.$set(index, ((e.loaded / e.total) * 200).toFixed(2) )
-          _this.uploadProgress[index] = ((e.loaded / e.total) * 200).toFixed(2);
-          _this.$forceUpdate();
-          console.log("上传 " + _this.uploadProgress[index]);
+          _this.uploadProgress[index] = ((e.loaded / e.total) * 200).toFixed(2)
+          _this.$forceUpdate()
+          console.log('上传 ' + _this.uploadProgress[index])
         },
-      };
+      }
       axios.post(this.uploadParams.host, formData, config).then((res) => {
-        console.log(res);
+        console.log(res)
         const file = {
           code: this.code,
-          fileName: this.names.join(","),
-        };
-        this.$common.addFileList(file);
-        let success = true;
+          fileName: this.names.join(','),
+        }
+        this.$common.addFileList(file)
+        let success = true
         for (let index = 0; index < this.uploadProgress.length; index++) {
-          const element = this.uploadProgress[index];
+          const element = this.uploadProgress[index]
           if (element != 200) {
-            success = false;
-            break;
+            success = false
+            break
           }
         }
         if (success) {
           this.$router.push({
-            name: "successTip",
+            name: 'successTip',
             params: { code: this.code },
-          });
+          })
         }
-      });
+      })
     },
     getCode() {
       if (this.fileList.length > 1 && !this.user.member) {
-        alert("批量上传文件需要开通高级账号");
+        alert('批量上传文件需要开通高级账号')
         if (!this.user) {
-          this.$router.push("login");
+          this.$router.push('login')
         }
-        return;
+        return
       }
-      const endPoint = this.$common.getEndPoint();
-      let filename = [];
+      const endPoint = this.$common.getEndPoint()
+      let filename = []
       this.fileList.forEach((item) => {
-        filename.push(item.name.replace(",", "#"));
-      });
-      this.names = filename;
+        filename.push(item.name.replace(',', '#'))
+      })
+      this.names = filename
       const params = {
         password: this.password,
         maxDownloadNum: this.num,
         hour: this.hour,
-        point: endPoint != "" && endPoint != null ? endPoint : "south",
-        filename: filename.join(","),
-      };
+        point: endPoint != '' && endPoint != null ? endPoint : 'south',
+        filename: filename.join(','),
+      }
       this.$api.file.getCode(params).then((res) => {
-        if (res.status === "success") {
-          this.code = res.data.code;
-          this.uploadParams = res.data;
-          this.confirmName = "";
+        if (res.status === 'success') {
+          this.code = res.data.code
+          this.uploadParams = res.data
+          this.confirmName = ''
           for (let index = 0; index < this.fileList.length; index++) {
-            this.uploadProgress.push(0);
-            this.upload(index);
+            this.uploadProgress.push(0)
+            this.upload(index)
           }
 
-          this.showProgress = true;
-          return;
+          this.showProgress = true
+          return
         }
-        this.$toast.error(res.data);
-      });
+        this.$toast.error(res.data)
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
@@ -186,7 +185,6 @@ export default {
     }
     .item {
       background-color: #fff;
-      color: #000;
       border-radius: 5px;
       font-size: 14px;
       display: block;
@@ -209,7 +207,6 @@ export default {
       flex-shrink: 0;
     }
     input {
-      border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       display: block;
       font-size: small;
@@ -218,7 +215,7 @@ export default {
       width: calc(100% - 20px);
       outline: none;
       &:focus {
-        border: 1px solid $theme-color;
+        border: 1px solid var(--theme-color);
       }
     }
   }
@@ -235,7 +232,7 @@ export default {
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   margin: 20px auto;
   .progress-bar {
-    background-color: $theme-color;
+    background-color: var(--theme-color);
     background-image: linear-gradient(
       45deg,
       rgba(255, 255, 255, 0.14902) 25%,

@@ -11,6 +11,7 @@ import successTip from "@/components/successTip.vue";
 import myfile from "@/components/myfile.vue";
 import pick from "@/components/pick.vue"
 import account from "@/components/account.vue"
+import setup from '@/components/setup.vue'
 Vue.use(VueRouter);
 
 const routes = [
@@ -59,6 +60,11 @@ const routes = [
         name: "account",
         component: account,
         props: true,
+    },
+    {
+        path: "/setup",
+        name: "setup",
+        component: setup,
     }
 ]
 

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import modal from "./modal";
+import modal from './modal'
 export default {
   components: {
     modal,
@@ -31,14 +31,14 @@ export default {
   },
   methods: {
     download(item) {
-      window.open(item.url);
+      window.open(item.url)
     },
   },
-};
+}
 </script>
 
-<style lang="scss" >
-.s-modal{
+<style lang="scss">
+.s-modal {
   justify-content: space-around;
 }
 .pick-wrap {
@@ -62,10 +62,10 @@ export default {
   .d-icon {
     width: 30px;
     height: 30px;
-    color: $theme-color;
+    color: var(--theme-color);
     cursor: pointer;
     &:hover {
-      color: $theme-hover-color;
+      color: var(--theme-hover-color);
     }
   }
 }

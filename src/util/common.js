@@ -61,6 +61,6 @@ const fun = {
     }
 }
 
-export default {
+export {
     fun
 }

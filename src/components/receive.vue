@@ -1,9 +1,5 @@
 <template>
-  <modal
-    confirmName="确定"
-    @confirm="receive"
-    :icon="!hasPassword"
-  >
+  <modal confirmName="确定" @confirm="receive" :icon="!hasPassword">
     <span class="back" v-show="hasPassword" @click="toggleInput"></span>
     <transition name="left">
       <div class="receive-warp" v-show="!hasPassword">
@@ -41,64 +37,69 @@
 import modal from './modal'
 export default {
   components: {
-    modal
+    modal,
   },
   data() {
     return {
       code: '',
       hasPassword: false,
-      password: ''
+      password: '',
     }
   },
-  watch:{
-    $route(pre){
+  watch: {
+    $route(pre) {
       console.log(pre)
-    }
+    },
   },
-  created(){
-    this.code=this.$route.params.code?this.$route.params.code:''
-    this.hasPassword=this.$route.params.needPassword?this.$route.params.needPassword:false
-    if(this.code){
+  created() {
+    this.code = this.$route.params.code ? this.$route.params.code : ''
+    this.hasPassword = this.$route.params.needPassword
+      ? this.$route.params.needPassword
+      : false
+    if (this.code) {
       this.receive()
     }
   },
   methods: {
     toggleInput() {
-      this.password=''
+      this.password = ''
       this.hasPassword = !this.hasPassword
     },
     receive() {
       const params = {
         code: this.code,
-        password: this.password
+        password: this.password,
       }
-      this.$api.file.receive(params).then(res => {
+      this.$api.file.receive(params).then((res) => {
         console.log(res)
         if (res.status == 'password') {
-          this.password == "" ? this.hasPassword = true : this.$toast.error("密码不正确")
-        } else if (res.status == "error") {
+          this.password == ''
+            ? (this.hasPassword = true)
+            : this.$toast.error('密码不正确')
+        } else if (res.status == 'error') {
           this.$toast.error(res.data)
         } else {
           if (res.data.type == 'txt') {
-            this.$router.push({ name: 'text', params: { data: res.data.content } })
+            this.$router.push({
+              name: 'text',
+              params: { data: res.data.content },
+            })
             return
           }
           const content = res.data.content
           if (content.length == 1) {
-            window.open(content[0].url);
-            this.$router.push("/")
+            window.open(content[0].url)
+            this.$router.push('/')
             return
           }
-          this.$router.push({ name: "pick", params: { fileList: content } })
+          this.$router.push({ name: 'pick', params: { fileList: content } })
         }
       })
-
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="scss">
-
 .receive-warp {
   .tip-box {
     display: flex;
@@ -106,14 +107,11 @@ export default {
     height: 60px;
     justify-content: space-around;
   }
-  .tip2 {
-    color: rgba(0, 0, 0, 0.5);
-  }
   .input-code {
     border: none;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid var(--theme-border-bg);
     border-radius: 0;
-    color: $theme-color;
+    color: var(--theme-color);
     font-size: 35px;
     letter-spacing: 10px;
     margin-bottom: 20px;
@@ -124,9 +122,11 @@ export default {
     transition: all 0.25s;
     width: 200px;
     &:hover {
-      border-bottom: 2px solid $theme-color;
+      border-bottom: 2px solid var(--theme-color);
+    }
+    &:focus {
+      border-bottom: 2px solid var(--theme-color);
     }
   }
 }
-
 </style>

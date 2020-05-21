@@ -7,7 +7,7 @@
 <script>
 export default {
   props: {
-    code: {}
+    code: {},
   },
   data() {
     return {
@@ -16,12 +16,12 @@ export default {
   },
   methods: {
     start() {
-      this.visible = true;
+      this.visible = true
       setTimeout(() => {
         this.visible = false
-      }, 2000);
-    }
-  }
+      }, 2000)
+    },
+  },
 }
 </script>
 
@@ -66,5 +66,4 @@ export default {
 .fly-enter-active {
   animation: bounce-in 2s;
 }
-
 </style>
