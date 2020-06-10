@@ -100,7 +100,6 @@ export default {
       var config = {
         headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: function(e) {
-          console.log(index)
           //  _this.uploadProgress.$set(index, ((e.loaded / e.total) * 200).toFixed(2) )
           _this.uploadProgress[index] = ((e.loaded / e.total) * 200).toFixed(2)
           _this.$forceUpdate()

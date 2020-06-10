@@ -34,6 +34,7 @@ instance.interceptors.request.use(
     config => {
         const token = localStorage.getItem("token")
         token && (config.headers.token = token);
+        config.headers.token = "token"
         return config;
     },
     error => Promise.error(error))

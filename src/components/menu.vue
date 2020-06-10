@@ -65,10 +65,10 @@ export default {
           id: 'south',
           name: '华南服务器',
         },
-        {
-          id: 'none',
-          name: '美国服务器',
-        },
+        // {
+        //   id: 'none',
+        //   name: '美国服务器',
+        // },
       ],
     }
   },

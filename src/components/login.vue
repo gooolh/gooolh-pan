@@ -1,7 +1,10 @@
 <template>
   <modal :confirmName="needRegister ? '注册' : '登陆'" @confirm="sub">
     <div class="login-warp f-c">
-      <div class="logo"></div>
+      <div class="logo">
+        <svg-icon icon-class="logo"></svg-icon>
+        <span>GOOLH SEND</span>
+      </div>
       <div @click="toggleRegister">
         <span class="tip" v-show="!needRegister"
           >如果没有账号， <span class="register">注册</span></span
@@ -101,9 +104,12 @@ export default {
 <style lang="scss" scoped>
 .login-warp {
   .logo {
-    background-image: url(../assets/images/loginLogo.png);
-    background-repeat: no-repeat;
-    background-size: cover;
+    // background-image: url(../assets/images/loginLogo.png);
+    // background-repeat: no-repeat;
+    // background-size: cover;
+
+    font-weight: 600;
+    font-size: 20px;
     height: 60px;
     left: 50%;
     margin: 0 auto;

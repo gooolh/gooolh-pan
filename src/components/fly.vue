@@ -40,13 +40,13 @@ export default {
 @keyframes bounce-in {
   0% {
     transform: scale(2);
-    top: calc(50% - 50px);
+    top: calc(50% - 70px);
     right: calc(50% - 40px);
     opacity: 1;
   }
   30% {
     transform: scale(2);
-    top: calc(50% - 50px);
+    top: calc(50% - 70px);
     right: calc(50% - 40px);
   }
   45% {

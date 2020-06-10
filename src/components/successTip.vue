@@ -9,7 +9,7 @@
         <p class="tip2">接收文件时，请输入该6位数取件码</p>
         <div class="tip2">
           <span>你也可以 或 </span>
-          <a class="primary copy" @click="copy" v-clipboard:copy="code"
+          <a class="primary copy" @click="copy" v-clipboard:copy="preUrl + code"
             >复制下载链接</a
           >
           <span> 或 </span>
@@ -35,6 +35,7 @@ export default {
   },
   data() {
     return {
+      preUrl: 'http://47.96.152.87/',
       showQRcode: false,
     }
   },
@@ -48,6 +49,10 @@ export default {
     },
     createQRcode() {
       this.showQRcode = true
+      if (this.$refs.qrCodeUrl.children.length > 0) {
+        return
+      }
+
       const qrurl = 'http://47.96.152.87/' + this.code
       new QRCode(this.$refs.qrCodeUrl, {
         text: qrurl,

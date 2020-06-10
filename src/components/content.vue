@@ -1,6 +1,9 @@
 <template>
   <div class="content-warp">
-    <div class="logo"></div>
+    <div class="logo">
+      <svg-icon icon-class="logo"></svg-icon>
+      <span>GOOLH SEND</span>
+    </div>
     <div
       class="send-warp"
       @mouseenter="mouseenter"
@@ -134,11 +137,10 @@ export default {
   align-items: center;
   height: 100vh;
   .logo {
-    background-image: url(../assets/images/logo.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 200px;
-    width: 350px;
+    height: 130px;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--theme-text-color);
   }
   .send-warp {
     position: relative;
