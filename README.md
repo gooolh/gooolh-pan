@@ -1,35 +1,28 @@
-# 互传神器 嘿嘿
+## 关于
 
-## Project setup
+------
+
+这是一个互传神器，可以控制下载次数和有效时间，秘密互传。目的为了同学之间互传好东西:)
+
+## 环境
+
+`nodejs`
+
+## 安装
 
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+## 运行
 
 ```
-yarn run serve
+yarn serve
 ```
 
-### Compiles and minifies for production
+## 打包
 
 ```
-yarn run build
+yarn build
 ```
 
-### Run your tests
-
-```
-yarn run test
-```
-
-### Lints and fixes files
-
-```
-yarn run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
