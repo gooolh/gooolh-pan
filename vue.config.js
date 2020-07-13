@@ -1,5 +1,14 @@
 
 module.exports = {
+  configureWebpack: config => {
+
+    // 用cdn方式引入
+    config.externals = {
+      'vue':'Vue',
+      'vue-router': 'VueRouter',
+      'axios': 'axios'
+    }
+  },
   chainWebpack: config => {
     // 一个规则里的 基础Loader
     // svg是个基础loader

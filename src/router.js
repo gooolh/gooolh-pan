@@ -8,7 +8,7 @@ import login from "@/components/login.vue";
 import sendText from "@/components/sendText.vue";
 import uploadOptions from "@/components/uploadOptions.vue";
 import successTip from "@/components/successTip.vue";
-import myfile from "@/components/myfile.vue";
+import myfile from "@/components/myFile.vue";
 import pick from "@/components/pick.vue"
 import account from "@/components/account.vue"
 import setup from '@/components/setup.vue'
